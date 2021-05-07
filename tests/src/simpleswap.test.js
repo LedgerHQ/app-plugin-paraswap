@@ -26,13 +26,10 @@ test("Test SimpleSwap", async () => {
     let transport = await sim.getTransport();
     const eth = new Eth(transport);
 
-    // These lines  are guessed and applied automatically by custom ledger.js (uncomment when using regular ledger.js)
-    // await eth.setExternalPlugin("Paraswap", "0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9", "0xa0712d68");
-    // const erc20Info = byContractAddress("0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9");
-    // await eth.provideERC20TokenInformation(erc20Info);
+    // Send a special APDU to prepare CAL for our call.
+    await eth.setExternalPlugin("Paraswap", "0x1bd435f3c054b6e901b7b108a0ab7617c808677b", "0xcfc0afeb");
 
-
-    // https://etherscan.io/tx/0x6b2c4d8e3292d59712b3092fda9b92b2ea9f6714d43c31e80a2d720d541748b2
+    // Original TX: https://etherscan.io/tx/0x6b2c4d8e3292d59712b3092fda9b92b2ea9f6714d43c31e80a2d720d541748b2
     await expect(
       eth.signTransaction(
         "44'/60'/0'/0/0",
