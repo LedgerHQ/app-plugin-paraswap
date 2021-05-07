@@ -16,6 +16,7 @@ static const uint8_t PARASWAP_BUY_ON_UNISWAP_FORK_SELECTOR[SELECTOR_SIZE] = {0x3
 static const uint8_t PARASWAP_SIMPLE_BUY_SELECTOR[SELECTOR_SIZE] = {0xa2, 0x7e, 0x8b, 0x6b};
 static const uint8_t PARASWAP_BUY_SELECTOR[SELECTOR_SIZE] = {0xf9, 0x5a, 0x49, 0xeb};
 
+// Array of all the different paraswap selectors.
 const uint8_t *const PARASWAP_SELECTORS[NUM_PARASWAP_SELECTORS] = {
     PARASWAP_SWAP_ON_UNISWAP_SELECTOR,
     PARASWAP_SWAP_ON_UNISWAP_FORK_SELECTOR,
@@ -33,6 +34,7 @@ const uint8_t PARASWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0xee, 0xee, 0xee, 0xee, 0x
                                                       0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
                                                       0xee, 0xee, 0xee, 0xee, 0xee, 0xee};
 
+// Used to indicate that the beneficiary should be the sender.
 const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -92,8 +94,8 @@ static void handle_init_contract(void *parameters) {
         case SIMPLE_SWAP:
             context->next_param = TOKEN_SENT;
             break;
-        case BUY:
         case MEGA_SWAP:
+        case BUY:
         case MULTI_SWAP:
             context->next_param = TOKEN_SENT;
             context->skip = 1;  // Skipping 0x20 (first param)
@@ -263,5 +265,6 @@ void paraswap_plugin_call(int message, void *parameters) {
             break;
         default:
             PRINTF("Unhandled message %d\n", message);
+            break;
     }
 }

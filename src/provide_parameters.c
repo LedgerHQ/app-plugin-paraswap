@@ -306,7 +306,6 @@ void handle_provide_parameter(void *parameters) {
                 switch (context->next_param) {
                     case TOKEN_SENT:  // fromToken
                         context->checkpoint = msg->parameterOffset;
-                        PRINTF("\t\tSetting checkpoint : %d\n", context->checkpoint);
                         handle_token_sent(msg, context);
                         context->next_param = AMOUNT_SENT;
                         break;
@@ -322,27 +321,19 @@ void handle_provide_parameter(void *parameters) {
                     case BENEFICIARY:
                         handle_beneficiary(msg, context);
                         context->next_param = MEGA_PATHS_OFFSET;
-                        context->skip = 2;
+                        context->skip = 2; // SCOTT
                         break;
-                    case MEGA_PATHS_OFFSET:  // 0x140
+                    case MEGA_PATHS_OFFSET:
                         context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
-                        PRINTF("\n\t\tMEGA OFFSET: %d, CHECKPOINT: %d, total: %d\n",
-                               context->offset,
-                               context->checkpoint,
-                               context->offset + context->checkpoint);
                         context->next_param = MEGA_PATHS_LEN;
                         break;
-                    case MEGA_PATHS_LEN:  //
+                    case MEGA_PATHS_LEN:
                         context->next_param = FIRST_MEGAPATH_OFFSET;
                         break;
-                    case FIRST_MEGAPATH_OFFSET:  // 0x60
+                    case FIRST_MEGAPATH_OFFSET:
                         context->checkpoint = msg->parameterOffset;
                         context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
                         context->next_param = FIRST_MEGAPATH;
-                        PRINTF("\n\t\tFIRST MEGA OFFSET: %d, CHECKPOINT: %d, total: %d\n",
-                               context->offset,
-                               context->checkpoint,
-                               context->offset + context->checkpoint);
                         break;
                     case FIRST_MEGAPATH:
                         context->checkpoint = msg->parameterOffset;
@@ -351,10 +342,6 @@ void handle_provide_parameter(void *parameters) {
                     case PATHS_OFFSET:
                         context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
                         context->next_param = PATHS_LEN;
-                        PRINTF("\n\t\tPATHS OFFSET: %d, CHECKPOINT: %d, total: %d\n",
-                               context->offset,
-                               context->checkpoint,
-                               context->offset + context->checkpoint);
                         break;
                     case PATHS_LEN:
                         context->skip = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
@@ -365,10 +352,6 @@ void handle_provide_parameter(void *parameters) {
                         context->checkpoint = msg->parameterOffset;
                         context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
                         context->next_param = TOKEN_RECEIVED;
-                        PRINTF("\n\t\tLAST OFFSET: %d, CHECKPOINT: %d, total: %d\n",
-                               context->offset,
-                               context->checkpoint,
-                               context->offset + context->checkpoint);
                         break;
                     case TOKEN_RECEIVED:
                         handle_token_received(msg, context);

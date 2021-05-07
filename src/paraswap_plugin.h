@@ -15,7 +15,7 @@
 // Paraswap uses `0xeeeee` as a dummy address to represent ETH.
 extern const uint8_t PARASWAP_ETH_ADDRESS[ADDRESS_LENGTH];
 
-// Adress 0x00000... used as a placeholder when beneficiary is not set.
+// Adress 0x00000... used to indicate that the beneficiary is the sender.
 extern const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH];
 
 // Returns 1 if corresponding address is the Paraswap address for ETH (0xeeeee...).
@@ -40,21 +40,15 @@ typedef enum {
     TOKEN_RECEIVED,   // Address of the token sent to the user.
     PATH,  // Path of the different asseths that will get swapped during the trade. First and last
            // tokens are the ones we care about.
-    EXPECTED_AMOUNT,  // Expected amount SCOTT REMOVE?
-    CALLEES,
-    EXCHANGE_DATA,
-    START_INDEXES,
-    VALUES,
     BENEFICIARY,  // Address to which the contract will send the tokens.
     OFFSET,
     PATHS_OFFSET,
     PATHS_LEN,
-    LAST_PATH,
     MEGA_PATHS_OFFSET,
     MEGA_PATHS_LEN,
     FIRST_MEGAPATH_OFFSET,
     FIRST_MEGAPATH,
-    NONE,
+    NONE, // Placeholder variant to be set when parsing is done but data is still being sent.
 } swap_params;
 
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
@@ -82,5 +76,6 @@ typedef struct paraswap_parameters_t {
     // 2 * 2 + 7 * 1 == 4 + 7 == 13 bytes. There are 16 - 13 == 3 bytes left.
 } paraswap_parameters_t;
 
+void debug_write(char *buf);
 void handle_provide_parameter(void *parameters);
 void paraswap_plugin_call(int message, void *parameters);
