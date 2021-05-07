@@ -1,12 +1,10 @@
 #pragma once
 
 #include <string.h>
-#include "eth_plugin_internal.h"
+#include "eth_internals.h"
+#include "eth_plugin_interface.h"
 
-
-#define ADDRESS_LENGTH   20
 #define PARAMETER_LENGTH 32
-#define BIGINT_LENGTH    32 // chane to INT256_LENGTH
 #define SELECTOR_SIZE    4
 
 #define RUN_APPLICATION 1
@@ -47,7 +45,7 @@ typedef enum {
     EXCHANGE_DATA,
     START_INDEXES,
     VALUES,
-    BENEFICIARY, // Address to which the contract will send the tokens.
+    BENEFICIARY,  // Address to which the contract will send the tokens.
     OFFSET,
     PATHS_OFFSET,
     PATHS_LEN,
@@ -59,14 +57,18 @@ typedef enum {
     NONE,
 } swap_params;
 
+// Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
 typedef struct paraswap_parameters_t {
-    uint8_t amount_sent[BIGINT_LENGTH];
-    uint8_t amount_received[BIGINT_LENGTH];
+    uint8_t amount_sent[INT256_LENGTH];
+    uint8_t amount_received[INT256_LENGTH];
     char beneficiary[ADDRESS_LENGTH];
     uint8_t contract_address_sent[ADDRESS_LENGTH];
     uint8_t contract_address_received[ADDRESS_LENGTH];
     char ticker_sent[MAX_TICKER_LEN];
-    char ticker_received[MAX_TICKER_LEN]; // 24 + 60 + 64 == 92 + 24 ==  64 + 64 + 20 -> 12 bytes left
+    char ticker_received[MAX_TICKER_LEN];
+
+    // 32 * 2 + 20 * 3 + 12 * 2 == 64 + 60 + 24 == 144
+    // 32 * 5 == 160 bytes so there are 160 - 144 == 16 bytes left.
 
     uint16_t offset;
     uint16_t checkpoint;
@@ -77,7 +79,7 @@ typedef struct paraswap_parameters_t {
     uint8_t selectorIndex;
     uint8_t list_len;
     uint8_t skip;
-
+    // 2 * 2 + 7 * 1 == 4 + 7 == 13 bytes. There are 16 - 13 == 3 bytes left.
 } paraswap_parameters_t;
 
 void handle_provide_parameter(void *parameters);

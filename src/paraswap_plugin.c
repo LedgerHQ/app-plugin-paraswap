@@ -1,28 +1,22 @@
 #include "paraswap_plugin.h"
 
-static const uint8_t const PARASWAP_SWAP_ON_UNISWAP_SELECTOR[SELECTOR_SIZE] = {0x58,
-                                                                               0xb9,
-                                                                               0xd1,
-                                                                               0x79};
-static const uint8_t const PARASWAP_SWAP_ON_UNISWAP_FORK_SELECTOR[SELECTOR_SIZE] = {0x08,
-                                                                                    0x63,
-                                                                                    0xb7,
-                                                                                    0xac};
-static const uint8_t const PARASWAP_SIMPLE_SWAP_SELECTOR[SELECTOR_SIZE] = {0xcf, 0xc0, 0xaf, 0xeb};
-static const uint8_t const PARASWAP_MULTI_SWAP_SELECTOR[SELECTOR_SIZE] = {0x8f, 0x00, 0xec, 0xcb};
-static const uint8_t const PARASWAP_MEGA_SWAP_SELECTOR[SELECTOR_SIZE] = {0xec, 0x1d, 0x21, 0xdd};
-static const uint8_t const PARASWAP_BUY_ON_UNISWAP_SELECTOR[SELECTOR_SIZE] = {0xf9,
-                                                                              0x35,
-                                                                              0x5f,
-                                                                              0x72};
-static const uint8_t const PARASWAP_BUY_ON_UNISWAP_FORK_SELECTOR[SELECTOR_SIZE] = {0x33,
-                                                                                   0x63,
-                                                                                   0x52,
-                                                                                   0x26};
-static const uint8_t const PARASWAP_SIMPLE_BUY_SELECTOR[SELECTOR_SIZE] = {0xa2, 0x7e, 0x8b, 0x6b};
-static const uint8_t const PARASWAP_BUY_SELECTOR[SELECTOR_SIZE] = {0xf9, 0x5a, 0x49, 0xeb};
+static const uint8_t PARASWAP_SWAP_ON_UNISWAP_SELECTOR[SELECTOR_SIZE] = {0x58, 0xb9, 0xd1, 0x79};
+static const uint8_t PARASWAP_SWAP_ON_UNISWAP_FORK_SELECTOR[SELECTOR_SIZE] = {0x08,
+                                                                              0x63,
+                                                                              0xb7,
+                                                                              0xac};
+static const uint8_t PARASWAP_SIMPLE_SWAP_SELECTOR[SELECTOR_SIZE] = {0xcf, 0xc0, 0xaf, 0xeb};
+static const uint8_t PARASWAP_MULTI_SWAP_SELECTOR[SELECTOR_SIZE] = {0x8f, 0x00, 0xec, 0xcb};
+static const uint8_t PARASWAP_MEGA_SWAP_SELECTOR[SELECTOR_SIZE] = {0xec, 0x1d, 0x21, 0xdd};
+static const uint8_t PARASWAP_BUY_ON_UNISWAP_SELECTOR[SELECTOR_SIZE] = {0xf9, 0x35, 0x5f, 0x72};
+static const uint8_t PARASWAP_BUY_ON_UNISWAP_FORK_SELECTOR[SELECTOR_SIZE] = {0x33,
+                                                                             0x63,
+                                                                             0x52,
+                                                                             0x26};
+static const uint8_t PARASWAP_SIMPLE_BUY_SELECTOR[SELECTOR_SIZE] = {0xa2, 0x7e, 0x8b, 0x6b};
+static const uint8_t PARASWAP_BUY_SELECTOR[SELECTOR_SIZE] = {0xf9, 0x5a, 0x49, 0xeb};
 
-const uint8_t* const PARASWAP_SELECTORS[NUM_PARASWAP_SELECTORS] = {
+const uint8_t *const PARASWAP_SELECTORS[NUM_PARASWAP_SELECTORS] = {
     PARASWAP_SWAP_ON_UNISWAP_SELECTOR,
     PARASWAP_SWAP_ON_UNISWAP_FORK_SELECTOR,
     PARASWAP_SIMPLE_SWAP_SELECTOR,
@@ -35,19 +29,13 @@ const uint8_t* const PARASWAP_SELECTORS[NUM_PARASWAP_SELECTORS] = {
 };
 
 // Paraswap uses `0xeeeee` as a dummy address to represent ETH.
-const uint8_t PARASWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
-                                        0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee};
+const uint8_t PARASWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
+                                                      0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
+                                                      0xee, 0xee, 0xee, 0xee, 0xee, 0xee};
 
-const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-
-
-// Paraswap uses `0xeeeee` as a dummy address to represent ETH.
-const uint8_t PARASWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
-                                        0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee};
-
-const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 // Prepend `dest` with `ticker`.
 // Dest must be big enough to hold `ticker` + `dest` + `\0`.
@@ -126,20 +114,24 @@ static void handle_finalize(void *parameters) {
     if (context->valid) {
         msg->numScreens = 2;
         if (context->selectorIndex == SIMPLE_SWAP || context->selectorIndex == SIMPLE_BUY)
-            if (strncmp(context->beneficiary, (char *)NULL_ETH_ADDRESS, ADDRESS_LENGTH) != 0) {
+            if (strncmp(context->beneficiary, (char *) NULL_ETH_ADDRESS, ADDRESS_LENGTH) != 0) {
                 // An addiitonal screen is required to display the `beneficiary` field.
                 msg->numScreens += 1;
             }
         if (ADDRESS_IS_ETH(context->contract_address_sent) == 0) {
             // Address is not ETH so we will need to look up the token in the CAL.
             msg->tokenLookup1 = context->contract_address_sent;
-            PRINTF("Setting address sent to: %.*H\n", ADDRESS_LENGTH, context->contract_address_sent);
+            PRINTF("Setting address sent to: %.*H\n",
+                   ADDRESS_LENGTH,
+                   context->contract_address_sent);
         } else {
             msg->tokenLookup1 = NULL;
         }
         if (ADDRESS_IS_ETH(context->contract_address_received) == 0) {
             // Address is not ETH so we will need to look up the token in the CAL.
-            PRINTF("Setting address receiving to: %.*H\n", ADDRESS_LENGTH, context->contract_address_received);
+            PRINTF("Setting address receiving to: %.*H\n",
+                   ADDRESS_LENGTH,
+                   context->contract_address_received);
             msg->tokenLookup2 = context->contract_address_received;
         } else {
             msg->tokenLookup2 = NULL;
@@ -162,8 +154,7 @@ static void handle_provide_token(void *parameters) {
         strncpy(context->ticker_sent, (char *) msg->token1->ticker, sizeof(context->ticker_sent));
     } else {
         context->decimals_sent = WEI_TO_ETHER;
-        uint8_t *ticker = (uint8_t *) PIC(chainConfig->coinName);
-        strncpy(context->ticker_sent, (char *) ticker, sizeof(context->ticker_sent));
+        strncpy(context->ticker_sent, "ETH", sizeof(context->ticker_sent));
     }
     if (msg->token2 != NULL) {
         context->decimals_received = msg->token2->decimals;
@@ -172,8 +163,7 @@ static void handle_provide_token(void *parameters) {
                 sizeof(context->ticker_received));
     } else {
         context->decimals_received = WEI_TO_ETHER;
-        uint8_t *ticker = (uint8_t *) PIC(chainConfig->coinName);
-        strncpy(context->ticker_received, (char *) ticker, sizeof(context->ticker_received));
+        strncpy(context->ticker_received, "ETH", sizeof(context->ticker_received));
     }
     msg->result = ETH_PLUGIN_RESULT_OK;
 }
@@ -182,7 +172,7 @@ static void handle_query_contract_id(void *parameters) {
     ethQueryContractID_t *msg = (ethQueryContractID_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
 
-    strncpy(msg->name, "Paraswap", 100); // check size
+    strncpy(msg->name, "Paraswap", 100);   // check size
     msg->nameLength = sizeof("Paraswap");  // scott
     switch (context->selectorIndex) {
         case MEGA_SWAP:
@@ -190,12 +180,12 @@ static void handle_query_contract_id(void *parameters) {
         case SIMPLE_SWAP:
         case SWAP_ON_UNI_FORK:
         case SWAP_ON_UNI:
-            strncpy(msg->version, "Swap", 40); // check size
+            strncpy(msg->version, "Swap", 40);  // check size
             break;
         case SIMPLE_BUY:
         case BUY_ON_UNI_FORK:
         case BUY_ON_UNI:
-            strncpy(msg->version, "Buy", 40); // check size
+            strncpy(msg->version, "Buy", 40);  // check size
             break;
         default:
             PRINTF("Selector Index :%d not supported\n", context->selectorIndex);
@@ -215,7 +205,7 @@ static void handle_query_contract_ui(void *parameters) {
     msg->result = ETH_PLUGIN_RESULT_OK;
     switch (msg->screenIndex) {
         case 0: {
-            strncpy(msg->title, "Send", 100); // degueu
+            strncpy(msg->title, "Send", 100);  // degueu
             adjustDecimals((char *) context->amount_sent,
                            strlen((char *) context->amount_sent),
                            msg->msg,
@@ -237,10 +227,11 @@ static void handle_query_contract_ui(void *parameters) {
             strcpy(msg->title, "Beneficiary");
             msg->msg[0] = '0';
             msg->msg[1] = 'x';
+            chain_config_t chainConfig = {0};
             getEthAddressStringFromBinary((uint8_t *) context->beneficiary,
                                           (uint8_t *) msg->msg + 2,
-                                          &global_sha3,
-                                          chainConfig);
+                                          msg->pluginSharedRW->sha3,
+                                          &chainConfig);
             break;
         }
         default:
