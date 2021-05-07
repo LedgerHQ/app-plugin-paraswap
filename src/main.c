@@ -28,10 +28,10 @@
 
 void call_app_ethereum() {
     unsigned int libcall_params[3];
-    libcall_params[0] = "Ethereum";
+    libcall_params[0] = (unsigned int)"Ethereum";
     libcall_params[1] = 0x100;
     libcall_params[2] = RUN_APPLICATION;
-    os_lib_call(&libcall_params);
+    os_lib_call((unsigned int *)&libcall_params);
 }
 
 __attribute__((section(".boot"))) int main(int arg0) {

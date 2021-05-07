@@ -83,3 +83,4 @@ typedef struct paraswap_parameters_t {
 } paraswap_parameters_t;
 
 void handle_provide_parameter(void *parameters);
+void paraswap_plugin_call(int message, void *parameters);
