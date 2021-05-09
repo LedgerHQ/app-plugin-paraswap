@@ -348,6 +348,11 @@ void handle_provide_parameter(void *parameters) {
                 }
                 break;
             }
+
+            default:
+                PRINTF("Selector Index %d not supported\n", context->selectorIndex);
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+                break;
         }
     }
 }
