@@ -5,18 +5,9 @@
 static void handle_amount_sent(ethPluginProvideParameter_t *msg, paraswap_parameters_t *context) {
     memset(context->amount_sent, 0, sizeof(context->amount_sent));
 
-    uint8_t i = 0;
-    // Skip the leading zeros.
-    while (msg->parameter[i] == 0) {
-        i++;
-        if (i >= PARAMETER_LENGTH) {
-            PRINTF("SCOTT GET REKT\n");  // THROW
-        }
-    }
-
     // Convert to string.
-    amountToString(&msg->parameter[i],
-                   PARAMETER_LENGTH - i,
+    amountToString(&msg->parameter,
+                   PARAMETER_LENGTH,
                    0,
                    "",
                    (char *) context->amount_sent,
@@ -30,17 +21,9 @@ static void handle_amount_received(ethPluginProvideParameter_t *msg,
                                    paraswap_parameters_t *context) {
     memset(context->amount_received, 0, sizeof(context->amount_received));
 
-    // Skip the leading zeros.
-    uint8_t i = 0;
-    while (msg->parameter[i] == 0) {
-        i++;
-        if (i >= PARAMETER_LENGTH) {
-            PRINTF("SCOTT GET REKT\n");  // throw
-        }
-    }
     // Convert to string.
-    amountToString(&msg->parameter[i],
-                   PARAMETER_LENGTH - i,
+    amountToString(&msg->parameter,
+                   PARAMETER_LENGTH,
                    0,   // No decimals
                    "",  // No ticker
                    (char *) context->amount_received,
@@ -102,7 +85,6 @@ void handle_provide_parameter(void *parameters) {
         }
 
         context->offset = 0;  // Reset offset
-        PRINTF("NOT SKIPPING: INDEX: %d\n", context->selectorIndex);
         switch (context->selectorIndex) {
             case BUY_ON_UNI:
             case SWAP_ON_UNI: {
