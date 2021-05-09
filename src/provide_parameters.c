@@ -6,7 +6,7 @@ static void handle_amount_sent(ethPluginProvideParameter_t *msg, paraswap_parame
     memset(context->amount_sent, 0, sizeof(context->amount_sent));
 
     // Convert to string.
-    amountToString(&msg->parameter,
+    amountToString(msg->parameter,
                    PARAMETER_LENGTH,
                    0,
                    "",
@@ -22,7 +22,7 @@ static void handle_amount_received(ethPluginProvideParameter_t *msg,
     memset(context->amount_received, 0, sizeof(context->amount_received));
 
     // Convert to string.
-    amountToString(&msg->parameter,
+    amountToString(msg->parameter,
                    PARAMETER_LENGTH,
                    0,   // No decimals
                    "",  // No ticker
