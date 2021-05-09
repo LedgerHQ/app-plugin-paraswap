@@ -9,7 +9,6 @@ const sim_options = {
   model: "nanos",
   logging: true,
   start_delay: 2000,
-  custom: '-k 2.0',
   X11: true,
 };
 const Resolve = require("path").resolve;
