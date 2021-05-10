@@ -23,8 +23,8 @@ extern const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH];
 
 typedef enum {
     SWAP_ON_UNI,
-    SWAP_ON_UNI_FORK,
     BUY_ON_UNI,
+    SWAP_ON_UNI_FORK,
     BUY_ON_UNI_FORK,
     SIMPLE_SWAP,
     SIMPLE_BUY,
