@@ -48,7 +48,7 @@ typedef enum {
     MEGA_PATHS_LEN,
     FIRST_MEGAPATH_OFFSET,
     FIRST_MEGAPATH,
-    NONE, // Placeholder variant to be set when parsing is done but data is still being sent.
+    NONE,  // Placeholder variant to be set when parsing is done but data is still being sent.
 } swap_params;
 
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.

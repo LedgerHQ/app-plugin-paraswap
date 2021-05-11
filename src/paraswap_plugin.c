@@ -85,8 +85,10 @@ static void handle_init_contract(void *parameters) {
         case SWAP_ON_UNI_FORK:
         case BUY_ON_UNI:
         case SWAP_ON_UNI:
-            if (context->selectorIndex == SWAP_ON_UNI_FORK || context->selectorIndex == BUY_ON_UNI_FORK) {
-                context->skip = 2;  // Skip the first two parameters (factory and initCode) for uni forks.
+            if (context->selectorIndex == SWAP_ON_UNI_FORK ||
+                context->selectorIndex == BUY_ON_UNI_FORK) {
+                context->skip =
+                    2;  // Skip the first two parameters (factory and initCode) for uni forks.
             }
             context->next_param = AMOUNT_SENT;
             break;

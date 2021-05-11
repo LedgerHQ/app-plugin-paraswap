@@ -95,9 +95,11 @@ void handle_provide_parameter(void *parameters) {
                         handle_amount_sent(msg, context);
                         context->next_param = AMOUNT_RECEIVED;
                         context->checkpoint = msg->parameterOffset;
-                        if (context->selectorIndex == BUY_ON_UNI_FORK || context->selectorIndex == SWAP_ON_UNI_FORK) {
+                        if (context->selectorIndex == BUY_ON_UNI_FORK ||
+                            context->selectorIndex == SWAP_ON_UNI_FORK) {
                             // Substract two chunks because we've skipped the first two parameters.
-                            // No underflow possible because we've skipped the first two chunks, so msg->parameterOffset > 2 * PARAMETER_LENGTH.
+                            // No underflow possible because we've skipped the first two chunks, so
+                            // msg->parameterOffset > 2 * PARAMETER_LENGTH.
                             context->checkpoint -= 2 * PARAMETER_LENGTH;
                         }
                         break;
@@ -184,7 +186,7 @@ void handle_provide_parameter(void *parameters) {
                     case AMOUNT_RECEIVED:  // toAmount
                         handle_amount_received(msg, context);
                         context->next_param = BENEFICIARY;
-                        context->skip = 1; // Skip expectedAmount
+                        context->skip = 1;  // Skip expectedAmount
                         break;
                     case BENEFICIARY:  // beneficiary
                         handle_beneficiary(msg, context);
@@ -199,7 +201,9 @@ void handle_provide_parameter(void *parameters) {
                         // We want to access path[-1] so take the length and decrease by one
                         context->skip = msg->parameter[PARAMETER_LENGTH - 1] - 1;
                         context->next_param = OFFSET;
-                        context->checkpoint = msg->parameterOffset + PARAMETER_LENGTH; // Offset checkpoint starts after the length
+                        context->checkpoint =
+                            msg->parameterOffset +
+                            PARAMETER_LENGTH;  // Offset checkpoint starts after the length
                         break;
                     case OFFSET:
                         context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
@@ -270,7 +274,7 @@ void handle_provide_parameter(void *parameters) {
                     case BENEFICIARY:
                         handle_beneficiary(msg, context);
                         context->next_param = MEGA_PATHS_OFFSET;
-                        context->skip = 2; // SCOTT
+                        context->skip = 2;  // SCOTT
                         break;
                     case MEGA_PATHS_OFFSET:
                         context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
