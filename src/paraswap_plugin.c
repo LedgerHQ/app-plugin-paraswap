@@ -81,13 +81,13 @@ static void handle_init_contract(void *parameters) {
 
     // Set `next_param` to be the first field we expect to parse.
     switch (context->selectorIndex) {
-        case BUY_ON_UNI:
-        case SWAP_ON_UNI:
-            context->next_param = AMOUNT_SENT;
-            break;
         case BUY_ON_UNI_FORK:
         case SWAP_ON_UNI_FORK:
-            context->skip = 2;  // Skip the first two parameters (factory and initCode).
+        case BUY_ON_UNI:
+        case SWAP_ON_UNI:
+            if (context->selectorIndex == SWAP_ON_UNI_FORK || context->selectorIndex == BUY_ON_UNI_FORK) {
+                context->skip = 2;  // Skip the first two parameters (factory and initCode) for uni forks.
+            }
             context->next_param = AMOUNT_SENT;
             break;
         case SIMPLE_BUY:
