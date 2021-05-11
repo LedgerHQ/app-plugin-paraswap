@@ -191,6 +191,7 @@ static void handle_query_contract_id(void *parameters) {
         case SIMPLE_BUY:
         case BUY_ON_UNI_FORK:
         case BUY_ON_UNI:
+        case BUY:
             strncpy(msg->version, "Buy", SHARED_CTX_FIELD_2_SIZE);
             msg->versionLength = sizeof("Buy");
             break;
@@ -200,55 +201,121 @@ static void handle_query_contract_id(void *parameters) {
             return;
     }
 
-    msg->versionLength = strlen(msg->version) + 1;
+    msg->versionLength = strnlen(msg->version, SHARED_CTX_FIELD_2_SIZE) + 1;
     msg->result = ETH_PLUGIN_RESULT_OK;
+}
+
+// Set UI for the "Send" screen.
+static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
+    switch (context->selectorIndex) {
+        case SWAP_ON_UNI_FORK:
+        case SWAP_ON_UNI:
+        case SIMPLE_SWAP:
+        case MEGA_SWAP:
+        case MULTI_SWAP:
+            strncpy(msg->title, "Send", SHARED_CTX_FIELD_1_SIZE);
+            break;
+        case BUY_ON_UNI_FORK:
+        case BUY_ON_UNI:
+        case BUY:
+        case SIMPLE_BUY:
+            strncpy(msg->title, "Send max", SHARED_CTX_FIELD_1_SIZE);
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
+
+    adjustDecimals((char *) context->amount_sent,
+                   strnlen((char *) context->amount_sent, sizeof(context->amount_sent)),
+                   msg->msg,
+                   SHARED_CTX_FIELD_2_SIZE,
+                   context->decimals_sent);
+
+    prepend_ticker(msg->msg, SHARED_CTX_FIELD_2_SIZE, context->ticker_sent);
+
+    msg->titleLength = strnlen(msg->msg, SHARED_CTX_FIELD_1_SIZE);
+    msg->msgLength = strnlen(msg->msg, SHARED_CTX_FIELD_2_SIZE);
+}
+
+// Set UI for "Receive" screen.
+static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
+    switch (context->selectorIndex) {
+        case SWAP_ON_UNI_FORK:
+        case SWAP_ON_UNI:
+        case SIMPLE_SWAP:
+        case MEGA_SWAP:
+        case MULTI_SWAP:
+            strncpy(msg->title, "Receive min", SHARED_CTX_FIELD_1_SIZE);
+            break;
+        case BUY_ON_UNI_FORK:
+        case BUY_ON_UNI:
+        case BUY:
+        case SIMPLE_BUY:
+            strncpy(msg->title, "Receive", SHARED_CTX_FIELD_1_SIZE);
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
+
+    adjustDecimals((char *) context->amount_received,
+                   strnlen((char *) context->amount_received, sizeof(context->amount_received)),
+                   msg->msg,
+                   SHARED_CTX_FIELD_2_SIZE,
+                   context->decimals_received);
+
+    prepend_ticker(msg->msg, SHARED_CTX_FIELD_2_SIZE, context->ticker_received);
+
+    msg->titleLength = strnlen(msg->msg, SHARED_CTX_FIELD_1_SIZE);
+    msg->msgLength = strnlen(msg->msg, SHARED_CTX_FIELD_2_SIZE);
+}
+
+// Set UI for "Beneficiary" screen.
+static void set_beneficiary_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
+
+    strncpy(msg->title, "Beneficiary", SHARED_CTX_FIELD_1_SIZE);
+
+    msg->msg[0] = '0';
+    msg->msg[1] = 'x';
+
+    chain_config_t chainConfig = {0};
+
+    getEthAddressStringFromBinary((uint8_t *) context->beneficiary,
+                                  (uint8_t *) msg->msg + 2,
+                                  msg->pluginSharedRW->sha3,
+                                  &chainConfig);
+
+    msg->titleLength = strnlen(msg->msg, SHARED_CTX_FIELD_1_SIZE);
+    msg->msgLength = strnlen(msg->msg, SHARED_CTX_FIELD_2_SIZE);
 }
 
 static void handle_query_contract_ui(void *parameters) {
     ethQueryContractUI_t *msg = (ethQueryContractUI_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
+
     memset(msg->title, 0, SHARED_CTX_FIELD_1_SIZE);
     memset(msg->msg, 0, SHARED_CTX_FIELD_2_SIZE);
+
     msg->result = ETH_PLUGIN_RESULT_OK;
+
     switch (msg->screenIndex) {
-        case 0: {
-            strncpy(msg->title, "Send", SHARED_CTX_FIELD_1_SIZE);
-            adjustDecimals((char *) context->amount_sent,
-                           strlen((char *) context->amount_sent),
-                           msg->msg,
-                           SHARED_CTX_FIELD_2_SIZE,
-                           context->decimals_sent);
-            prepend_ticker(msg->msg, SHARED_CTX_FIELD_2_SIZE, context->ticker_sent);
-        } break;
-        case 1: {
-            strcpy(msg->title, "Receive");
-            adjustDecimals((char *) context->amount_received,
-                           strlen((char *) context->amount_received),
-                           msg->msg,
-                           SHARED_CTX_FIELD_2_SIZE,
-                           context->decimals_received);
-            prepend_ticker(msg->msg, SHARED_CTX_FIELD_2_SIZE, context->ticker_received);
+        case 0:
+            set_send_ui(msg, context);
             break;
-        }
-        case 2: {
-            strcpy(msg->title, "Beneficiary");
-            msg->msg[0] = '0';
-            msg->msg[1] = 'x';
-            chain_config_t chainConfig = {0};
-            getEthAddressStringFromBinary((uint8_t *) context->beneficiary,
-                                          (uint8_t *) msg->msg + 2,
-                                          msg->pluginSharedRW->sha3,
-                                          &chainConfig);
+        case 1:
+            set_receive_ui(msg, context);
             break;
-        }
+        case 2:
+            set_beneficiary_ui(msg, context);
+            break;
         default:
             PRINTF("Received an invalid screenIndex\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;
-            break;
+            return;
     }
-
-    msg->titleLength = strnlen(msg->msg, SHARED_CTX_FIELD_1_SIZE);
-    msg->msgLength = strnlen(msg->msg, SHARED_CTX_FIELD_2_SIZE);
 }
 
 void paraswap_plugin_call(int message, void *parameters) {
