@@ -269,12 +269,12 @@ void handle_provide_parameter(void *parameters) {
                     case AMOUNT_RECEIVED:
                         handle_amount_received(msg, context);
                         context->next_param = BENEFICIARY;
-                        context->skip = 1;
+                        context->skip = 1;  // Skip expectedAmount.
                         break;
                     case BENEFICIARY:
                         handle_beneficiary(msg, context);
                         context->next_param = MEGA_PATHS_OFFSET;
-                        context->skip = 2;  // SCOTT
+                        context->skip = 2;  // Skip referrer and useReduxToken.
                         break;
                     case MEGA_PATHS_OFFSET:
                         context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
@@ -298,7 +298,7 @@ void handle_provide_parameter(void *parameters) {
                         break;
                     case PATHS_LEN:
                         context->skip = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
-                        context->skip--;
+                        context->skip--;  // Decrease by one because we wish to acces path[-1].
                         context->next_param = PATH;
                         break;
                     case PATH:
