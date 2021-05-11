@@ -86,6 +86,8 @@ void handle_provide_parameter(void *parameters) {
 
         context->offset = 0;  // Reset offset
         switch (context->selectorIndex) {
+            case BUY_ON_UNI_FORK:
+            case SWAP_ON_UNI_FORK:
             case BUY_ON_UNI:
             case SWAP_ON_UNI: {
                 switch (context->next_param) {
@@ -111,46 +113,6 @@ void handle_provide_parameter(void *parameters) {
                         // -2 because we won't be skipping the first one and the last one.
                         context->skip = context->list_len - 2;
                         context->next_param = TOKEN_RECEIVED;
-                        break;
-                    case TOKEN_RECEIVED:  // path[len(path) - 1]
-                        handle_token_received(msg, context);
-                        context->next_param = NONE;
-                        break;
-                    case NONE:
-                        break;
-                    default:
-                        PRINTF("Unsupported param\n");
-                        msg->result = ETH_PLUGIN_RESULT_ERROR;
-                        break;
-                }
-                break;
-            }
-            case BUY_ON_UNI_FORK:
-            case SWAP_ON_UNI_FORK: {
-                switch (context->next_param) {
-                    case AMOUNT_SENT:  // amountInMax
-                        handle_amount_sent(msg, context);
-                        context->next_param = AMOUNT_RECEIVED;
-                        context->checkpoint = msg->parameterOffset;
-                        break;
-                    case AMOUNT_RECEIVED:  // amountOut
-                        handle_amount_received(msg, context);
-                        context->next_param = PATHS_OFFSET;
-                        break;
-                    case PATHS_OFFSET:
-                        context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
-                        context->next_param = PATH;
-                        break;
-                    case PATH:
-                        handle_list_len(msg, context);
-                        context->next_param = TOKEN_SENT;
-                        break;
-                    case TOKEN_SENT:  // path[0]
-                        handle_token_sent(msg, context);
-                        context->next_param = TOKEN_RECEIVED;
-                        context->skip =
-                            context->list_len -
-                            2;  // -2 because we won't be skipping the first one and the last one.
                         break;
                     case TOKEN_RECEIVED:  // path[len(path) - 1]
                         handle_token_received(msg, context);
