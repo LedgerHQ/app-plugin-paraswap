@@ -71,7 +71,7 @@ typedef struct paraswap_parameters_t {
     uint8_t decimals_sent;
     uint8_t decimals_received;
     uint8_t selectorIndex;
-    uint8_t list_len;
+    uint8_t array_len;
     uint8_t skip;
     // 2 * 2 + 7 * 1 == 4 + 7 == 13 bytes. There are 16 - 13 == 3 bytes left.
 } paraswap_parameters_t;

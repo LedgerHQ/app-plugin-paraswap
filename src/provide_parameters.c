@@ -39,9 +39,9 @@ static void handle_beneficiary(ethPluginProvideParameter_t *msg, paraswap_parame
     PRINTF("BENEFICIARY: %.*H\n", ADDRESS_LENGTH, context->beneficiary);
 }
 
-static void handle_list_len(ethPluginProvideParameter_t *msg, paraswap_parameters_t *context) {
-    context->list_len = msg->parameter[PARAMETER_LENGTH - 1];
-    PRINTF("LIST LEN: %d\n", context->list_len);
+static void handle_array_len(ethPluginProvideParameter_t *msg, paraswap_parameters_t *context) {
+    context->array_len = msg->parameter[PARAMETER_LENGTH - 1];
+    PRINTF("LIST LEN: %d\n", context->array_len);
 }
 
 static void handle_token_sent(ethPluginProvideParameter_t *msg, paraswap_parameters_t *context) {
@@ -95,6 +95,11 @@ void handle_provide_parameter(void *parameters) {
                         handle_amount_sent(msg, context);
                         context->next_param = AMOUNT_RECEIVED;
                         context->checkpoint = msg->parameterOffset;
+                        if (context->selectorIndex == BUY_ON_UNI_FORK || context->selectorIndex == SWAP_ON_UNI_FORK) {
+                            // Substract two chunks because we've skipped the first two parameters.
+                            // No underflow possible because we've skipped the first two chunks, so msg->parameterOffset > 2 * PARAMETER_LENGTH.
+                            context->checkpoint -= 2 * PARAMETER_LENGTH;
+                        }
                         break;
                     case AMOUNT_RECEIVED:  // amountOut
                         handle_amount_received(msg, context);
@@ -105,13 +110,13 @@ void handle_provide_parameter(void *parameters) {
                         context->next_param = PATH;
                         break;
                     case PATH:  // len(path)
-                        handle_list_len(msg, context);
+                        handle_array_len(msg, context);
                         context->next_param = TOKEN_SENT;
                         break;
                     case TOKEN_SENT:  // path[0]
                         handle_token_sent(msg, context);
                         // -2 because we won't be skipping the first one and the last one.
-                        context->skip = context->list_len - 2;
+                        context->skip = context->array_len - 2;
                         context->next_param = TOKEN_RECEIVED;
                         break;
                     case TOKEN_RECEIVED:  // path[len(path) - 1]
@@ -179,7 +184,7 @@ void handle_provide_parameter(void *parameters) {
                     case AMOUNT_RECEIVED:  // toAmount
                         handle_amount_received(msg, context);
                         context->next_param = BENEFICIARY;
-                        context->skip = 1;
+                        context->skip = 1; // Skip expectedAmount
                         break;
                     case BENEFICIARY:  // beneficiary
                         handle_beneficiary(msg, context);
@@ -192,11 +197,11 @@ void handle_provide_parameter(void *parameters) {
                         break;
                     case PATHS_LEN:
                         // We want to access path[-1] so take the length and decrease by one
-                        context->skip = U4BE(msg->parameter, PARAMETER_LENGTH - 4) - 1;
+                        context->skip = msg->parameter[PARAMETER_LENGTH - 1] - 1;
                         context->next_param = OFFSET;
+                        context->checkpoint = msg->parameterOffset + PARAMETER_LENGTH; // Offset checkpoint starts after the length
                         break;
                     case OFFSET:
-                        context->checkpoint = msg->parameterOffset;
                         context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
                         context->next_param = TOKEN_RECEIVED;
                         break;
