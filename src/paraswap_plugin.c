@@ -49,7 +49,7 @@ static void prepend_ticker(char *dest, uint8_t destsize, char *ticker) {
     uint8_t dest_len = strlen(dest);
 
     if (dest_len + ticker_len >= destsize) {
-        THROW(0x6504);
+        THROW(0x6503);
     }
 
     // Right shift the string by `ticker_len` bytes.
