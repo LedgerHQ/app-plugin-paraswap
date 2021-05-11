@@ -98,7 +98,7 @@ static void handle_init_contract(void *parameters) {
         case BUY:
         case MULTI_SWAP:
             context->next_param = TOKEN_SENT;
-            context->skip = 1;  // Skipping 0x20 (first param)
+            context->skip = 1;  // Skipping 0x20 (offset of structure)
             break;
         default:
             PRINTF("Missing selectorIndex\n");
