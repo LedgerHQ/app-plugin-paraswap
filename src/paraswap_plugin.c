@@ -176,20 +176,23 @@ static void handle_query_contract_id(void *parameters) {
     ethQueryContractID_t *msg = (ethQueryContractID_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
 
-    strncpy(msg->name, "Paraswap", 100);   // check size
-    msg->nameLength = sizeof("Paraswap");  // scott
+    strncpy(msg->name, PLUGIN_NAME, SHARED_CTX_FIELD_1_SIZE);
+    msg->nameLength = sizeof(PLUGIN_NAME);
+
     switch (context->selectorIndex) {
         case MEGA_SWAP:
         case MULTI_SWAP:
         case SIMPLE_SWAP:
         case SWAP_ON_UNI_FORK:
         case SWAP_ON_UNI:
-            strncpy(msg->version, "Swap", 40);  // check size
+            strncpy(msg->version, "Swap", SHARED_CTX_FIELD_2_SIZE);
+            msg->versionLength = sizeof("Swap");
             break;
         case SIMPLE_BUY:
         case BUY_ON_UNI_FORK:
         case BUY_ON_UNI:
-            strncpy(msg->version, "Buy", 40);  // check size
+            strncpy(msg->version, "Buy", SHARED_CTX_FIELD_2_SIZE);
+            msg->versionLength = sizeof("Buy");
             break;
         default:
             PRINTF("Selector Index :%d not supported\n", context->selectorIndex);
@@ -204,27 +207,27 @@ static void handle_query_contract_id(void *parameters) {
 static void handle_query_contract_ui(void *parameters) {
     ethQueryContractUI_t *msg = (ethQueryContractUI_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
-    memset(msg->title, 0, 100);  // 100 ? degueu put in sdk
-    memset(msg->msg, 0, 40);     // 40 ? deugue put in sdk
+    memset(msg->title, 0, SHARED_CTX_FIELD_1_SIZE);
+    memset(msg->msg, 0, SHARED_CTX_FIELD_2_SIZE);
     msg->result = ETH_PLUGIN_RESULT_OK;
     switch (msg->screenIndex) {
         case 0: {
-            strncpy(msg->title, "Send", 100);  // degueu
+            strncpy(msg->title, "Send", SHARED_CTX_FIELD_1_SIZE);
             adjustDecimals((char *) context->amount_sent,
                            strlen((char *) context->amount_sent),
                            msg->msg,
-                           40,  // Len scott ?
+                           SHARED_CTX_FIELD_2_SIZE,
                            context->decimals_sent);
-            prepend_ticker(msg->msg, 40, context->ticker_sent);
+            prepend_ticker(msg->msg, SHARED_CTX_FIELD_2_SIZE, context->ticker_sent);
         } break;
         case 1: {
             strcpy(msg->title, "Receive");
             adjustDecimals((char *) context->amount_received,
                            strlen((char *) context->amount_received),
                            msg->msg,
-                           40,  // len scott ?
+                           SHARED_CTX_FIELD_2_SIZE,
                            context->decimals_received);
-            prepend_ticker(msg->msg, 40, context->ticker_received);
+            prepend_ticker(msg->msg, SHARED_CTX_FIELD_2_SIZE, context->ticker_received);
             break;
         }
         case 2: {
@@ -243,6 +246,9 @@ static void handle_query_contract_ui(void *parameters) {
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             break;
     }
+
+    msg->titleLength = strnlen(msg->msg, SHARED_CTX_FIELD_1_SIZE);
+    msg->msgLength = strnlen(msg->msg, SHARED_CTX_FIELD_2_SIZE);
 }
 
 void paraswap_plugin_call(int message, void *parameters) {

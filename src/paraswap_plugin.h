@@ -12,6 +12,8 @@
 #define NUM_PARASWAP_SELECTORS 9
 #define SELECTOR_SIZE          4
 
+#define PLUGIN_NAME "Paraswap"
+
 // Paraswap uses `0xeeeee` as a dummy address to represent ETH.
 extern const uint8_t PARASWAP_ETH_ADDRESS[ADDRESS_LENGTH];
 
