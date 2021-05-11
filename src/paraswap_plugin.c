@@ -275,7 +275,6 @@ static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *con
 
 // Set UI for "Beneficiary" screen.
 static void set_beneficiary_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
-
     strncpy(msg->title, "Beneficiary", SHARED_CTX_FIELD_1_SIZE);
 
     msg->msg[0] = '0';
