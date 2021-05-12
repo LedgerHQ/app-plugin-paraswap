@@ -247,7 +247,7 @@ static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *con
         case SIMPLE_SWAP:
         case MEGA_SWAP:
         case MULTI_SWAP:
-            strncpy(msg->title, "Receive min", SHARED_CTX_FIELD_1_SIZE);
+            strncpy(msg->title, "Receive Min", SHARED_CTX_FIELD_1_SIZE);
             break;
         case BUY_ON_UNI_FORK:
         case BUY_ON_UNI:
