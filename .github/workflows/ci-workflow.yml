@@ -8,18 +8,20 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: docker://ledgerhq/ledger-app-builder:1.6.1-2
+      image: docker://ledgerhq/ledger-app-builder:2.0.0-1
 
     steps:
       - name: Clone
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
-      - name: Build Compound plugin
+      - name: Build Paraswap plugin
         run: |
           make DEBUG=1
 
-      - name: Upload Compound binary
+      - name: Upload Paraswap binary
         uses: actions/upload-artifact@v2
         with:
-          name: compound-app-debug
+          name: paraswap-app-debug
           path: bin
