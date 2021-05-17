@@ -67,6 +67,12 @@ static void prepend_ticker(char *dest, uint8_t destsize, char *ticker) {
 // Called once to init.
 static void handle_init_contract(void *parameters) {
     ethPluginInitContract_t *msg = (ethPluginInitContract_t *) parameters;
+
+    if (msg->pluginContextLength < sizeof(paraswap_parameters_t)) {
+        msg->result = ETH_PLUGIN_RESULT_ERROR;
+        return;
+    }
+
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
     memset(context, 0, sizeof(*context));
     context->valid = 1;
