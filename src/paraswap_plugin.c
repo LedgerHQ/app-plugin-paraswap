@@ -1,4 +1,5 @@
 #include "paraswap_plugin.h"
+#include <bsd/string.h>
 
 static const uint8_t PARASWAP_SWAP_ON_UNISWAP_SELECTOR[SELECTOR_SIZE] = {0x58, 0xb9, 0xd1, 0x79};
 static const uint8_t PARASWAP_SWAP_ON_UNISWAP_FORK_SELECTOR[SELECTOR_SIZE] = {0x08,
@@ -161,19 +162,19 @@ static void handle_provide_token(void *parameters) {
     PRINTF("PARASWAP plugin provide token: 0x%p, 0x%p\n", msg->token1, msg->token2);
     if (msg->token1 != NULL) {
         context->decimals_sent = msg->token1->decimals;
-        strncpy(context->ticker_sent, (char *) msg->token1->ticker, sizeof(context->ticker_sent));
+        strlcpy(context->ticker_sent, (char *) msg->token1->ticker, sizeof(context->ticker_sent));
     } else {
         context->decimals_sent = WEI_TO_ETHER;
-        strncpy(context->ticker_sent, "ETH", sizeof(context->ticker_sent));
+        strlcpy(context->ticker_sent, "ETH", sizeof(context->ticker_sent));
     }
     if (msg->token2 != NULL) {
         context->decimals_received = msg->token2->decimals;
-        strncpy(context->ticker_received,
+        strlcpy(context->ticker_received,
                 (char *) msg->token2->ticker,
                 sizeof(context->ticker_received));
     } else {
         context->decimals_received = WEI_TO_ETHER;
-        strncpy(context->ticker_received, "ETH", sizeof(context->ticker_received));
+        strlcpy(context->ticker_received, "ETH", sizeof(context->ticker_received));
     }
     msg->result = ETH_PLUGIN_RESULT_OK;
 }
@@ -182,8 +183,7 @@ static void handle_query_contract_id(void *parameters) {
     ethQueryContractID_t *msg = (ethQueryContractID_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
 
-    strncpy(msg->name, PLUGIN_NAME, SHARED_CTX_FIELD_1_SIZE);
-    msg->nameLength = sizeof(PLUGIN_NAME);
+    strlcpy(msg->name, PLUGIN_NAME, msg->nameLength);
 
     switch (context->selectorIndex) {
         case MEGA_SWAP:
@@ -191,15 +191,13 @@ static void handle_query_contract_id(void *parameters) {
         case SIMPLE_SWAP:
         case SWAP_ON_UNI_FORK:
         case SWAP_ON_UNI:
-            strncpy(msg->version, "Swap", SHARED_CTX_FIELD_2_SIZE);
-            msg->versionLength = sizeof("Swap");
+            strlcpy(msg->version, "Swap", msg->versionLength);
             break;
         case SIMPLE_BUY:
         case BUY_ON_UNI_FORK:
         case BUY_ON_UNI:
         case BUY:
-            strncpy(msg->version, "Buy", SHARED_CTX_FIELD_2_SIZE);
-            msg->versionLength = sizeof("Buy");
+            strlcpy(msg->version, "Buy", msg->versionLength);
             break;
         default:
             PRINTF("Selector Index :%d not supported\n", context->selectorIndex);
@@ -207,7 +205,6 @@ static void handle_query_contract_id(void *parameters) {
             return;
     }
 
-    msg->versionLength = strnlen(msg->version, SHARED_CTX_FIELD_2_SIZE) + 1;
     msg->result = ETH_PLUGIN_RESULT_OK;
 }
 
@@ -219,13 +216,13 @@ static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *contex
         case SIMPLE_SWAP:
         case MEGA_SWAP:
         case MULTI_SWAP:
-            strncpy(msg->title, "Send", SHARED_CTX_FIELD_1_SIZE);
+            strlcpy(msg->title, "Send", msg->titleLength);
             break;
         case BUY_ON_UNI_FORK:
         case BUY_ON_UNI:
         case BUY:
         case SIMPLE_BUY:
-            strncpy(msg->title, "Send max", SHARED_CTX_FIELD_1_SIZE);
+            strlcpy(msg->title, "Send max", msg->titleLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -235,14 +232,10 @@ static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *contex
 
     adjustDecimals((char *) context->amount_sent,
                    strnlen((char *) context->amount_sent, sizeof(context->amount_sent)),
-                   msg->msg,
-                   SHARED_CTX_FIELD_2_SIZE,
+                   msg->msg, msg->msgLength,
                    context->decimals_sent);
 
-    prepend_ticker(msg->msg, SHARED_CTX_FIELD_2_SIZE, context->ticker_sent);
-
-    msg->titleLength = strnlen(msg->msg, SHARED_CTX_FIELD_1_SIZE);
-    msg->msgLength = strnlen(msg->msg, SHARED_CTX_FIELD_2_SIZE);
+    prepend_ticker(msg->msg, msg->msgLength, context->ticker_sent);
 }
 
 // Set UI for "Receive" screen.
@@ -253,13 +246,13 @@ static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *con
         case SIMPLE_SWAP:
         case MEGA_SWAP:
         case MULTI_SWAP:
-            strncpy(msg->title, "Receive Min", SHARED_CTX_FIELD_1_SIZE);
+            strlcpy(msg->title, "Receive Min", msg->titleLength);
             break;
         case BUY_ON_UNI_FORK:
         case BUY_ON_UNI:
         case BUY:
         case SIMPLE_BUY:
-            strncpy(msg->title, "Receive", SHARED_CTX_FIELD_1_SIZE);
+            strlcpy(msg->title, "Receive", msg->titleLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -269,19 +262,15 @@ static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *con
 
     adjustDecimals((char *) context->amount_received,
                    strnlen((char *) context->amount_received, sizeof(context->amount_received)),
-                   msg->msg,
-                   SHARED_CTX_FIELD_2_SIZE,
+                   msg->msg, msg->msgLength,
                    context->decimals_received);
 
-    prepend_ticker(msg->msg, SHARED_CTX_FIELD_2_SIZE, context->ticker_received);
-
-    msg->titleLength = strnlen(msg->msg, SHARED_CTX_FIELD_1_SIZE);
-    msg->msgLength = strnlen(msg->msg, SHARED_CTX_FIELD_2_SIZE);
+    prepend_ticker(msg->msg, msg->msgLength, context->ticker_received);
 }
 
 // Set UI for "Beneficiary" screen.
 static void set_beneficiary_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
-    strncpy(msg->title, "Beneficiary", SHARED_CTX_FIELD_1_SIZE);
+    strlcpy(msg->title, "Beneficiary", msg->titleLength);
 
     msg->msg[0] = '0';
     msg->msg[1] = 'x';
@@ -292,18 +281,14 @@ static void set_beneficiary_ui(ethQueryContractUI_t *msg, paraswap_parameters_t 
                                   (uint8_t *) msg->msg + 2,
                                   msg->pluginSharedRW->sha3,
                                   &chainConfig);
-
-    msg->titleLength = strnlen(msg->msg, SHARED_CTX_FIELD_1_SIZE);
-    msg->msgLength = strnlen(msg->msg, SHARED_CTX_FIELD_2_SIZE);
 }
 
 static void handle_query_contract_ui(void *parameters) {
     ethQueryContractUI_t *msg = (ethQueryContractUI_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
 
-    memset(msg->title, 0, SHARED_CTX_FIELD_1_SIZE);
-    memset(msg->msg, 0, SHARED_CTX_FIELD_2_SIZE);
-
+    memset(msg->title, 0, msg->titleLength);
+    memset(msg->msg, 0, msg->msgLength);
     msg->result = ETH_PLUGIN_RESULT_OK;
 
     switch (msg->screenIndex) {
