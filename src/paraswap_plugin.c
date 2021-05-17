@@ -69,6 +69,11 @@ static void prepend_ticker(char *dest, uint8_t destsize, char *ticker) {
 static void handle_init_contract(void *parameters) {
     ethPluginInitContract_t *msg = (ethPluginInitContract_t *) parameters;
 
+    if (msg->interfaceVersion != ETH_PLUGIN_INTERFACE_VERSION_1) {
+        msg->result = ETH_PLUGIN_RESULT_UNAVAILABLE;
+        return;
+    }
+
     if (msg->pluginContextLength < sizeof(paraswap_parameters_t)) {
         msg->result = ETH_PLUGIN_RESULT_ERROR;
         return;
@@ -232,7 +237,8 @@ static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *contex
 
     adjustDecimals((char *) context->amount_sent,
                    strnlen((char *) context->amount_sent, sizeof(context->amount_sent)),
-                   msg->msg, msg->msgLength,
+                   msg->msg,
+                   msg->msgLength,
                    context->decimals_sent);
 
     prepend_ticker(msg->msg, msg->msgLength, context->ticker_sent);
@@ -262,7 +268,8 @@ static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *con
 
     adjustDecimals((char *) context->amount_received,
                    strnlen((char *) context->amount_received, sizeof(context->amount_received)),
-                   msg->msg, msg->msgLength,
+                   msg->msg,
+                   msg->msgLength,
                    context->decimals_received);
 
     prepend_ticker(msg->msg, msg->msgLength, context->ticker_received);
