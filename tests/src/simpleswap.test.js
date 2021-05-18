@@ -9,6 +9,7 @@ const sim_options = {
   model: "nanos",
   logging: true,
   X11: true,
+  custom: '',
 };
 const Resolve = require("path").resolve;
 const APP_PATH = Resolve("elfs/ethereum.elf");

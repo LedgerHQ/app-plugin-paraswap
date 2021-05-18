@@ -10,6 +10,7 @@ const sim_options = {
   logging: true,
   start_delay: 2000,
   X11: true,
+  custom: '',
 };
 const Resolve = require("path").resolve;
 const APP_PATH = Resolve("elfs/ethereum.elf");
