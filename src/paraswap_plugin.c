@@ -1,6 +1,8 @@
 #include "paraswap_plugin.h"
 #include <string.h>
 
+// Need more information about the interface for plugins? Please read the README.md!
+
 static const uint8_t PARASWAP_SWAP_ON_UNISWAP_SELECTOR[SELECTOR_SIZE] = {0x58, 0xb9, 0xd1, 0x79};
 static const uint8_t PARASWAP_SWAP_ON_UNISWAP_FORK_SELECTOR[SELECTOR_SIZE] = {0x08,
                                                                               0x63,
