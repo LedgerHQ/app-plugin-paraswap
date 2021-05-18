@@ -18,6 +18,10 @@ and do the same with `BOLOS_SDK` environment variable
 BOLOS_SDK=/opt/nanos-secure-sdk
 ```
 
+## Documentation
+
+Need more information about the interface, the architecture, or general stuff about ethereum plugins? You can find more about them in the [ethereum-app documentation](https://github.com/LedgerHQ/app-ethereum/blob/master/doc/ethapp_plugins.asc).
+
 ## Compilation
 
 ```
