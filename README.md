@@ -25,13 +25,9 @@ make DEBUG=1  # compile optionally with PRINTF
 make load     # load the app on the Nano using ledgerblue
 ```
 
-This plugin uses the [ethereum-plugin-sdk](https://github.com/LedgerHQ/ethereum-plugin-sdk/). If there's an error while building, try running
-```sh
-git pull --recurse-submodules
-```
-in order to update the sdk. If this fixes your bug, please file an issue or create a PR to add the new sdk version :)
+This plugin uses the [ethereum-plugin-sdk](https://github.com/LedgerHQ/ethereum-plugin-sdk/). If there's an error while building, try running `git pull --recurse-submodules` in order to update the sdk. If this fixes your bug, please file an issue or create a PR to add the new sdk version :)
 
-If you need to update the sdk, you will need to do it locally and create a PR on the [ethereu-plugin-sdk repo](https://github.com/LedgerHQ/ethereum-plugin-sdk/)
+If you need to update the sdk, you will need to do it locally and create a PR on the [ethereu-plugin-sdk repo](https://github.com/LedgerHQ/ethereum-plugin-sdk/).
 
 ## Tests & Continuous Integration
 
