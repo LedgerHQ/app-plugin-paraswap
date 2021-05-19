@@ -74,6 +74,7 @@ endif
 # Enabling debug PRINTF
 DEBUG:= 0
 ifneq ($(DEBUG),0)
+DEFINES += HAVE_STACK_OVERFLOW_CHECK
 ifeq ($(TARGET_NAME),TARGET_NANOX)
 DEFINES   += HAVE_PRINTF PRINTF=mcu_usb_printf
 else

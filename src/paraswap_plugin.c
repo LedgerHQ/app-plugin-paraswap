@@ -229,7 +229,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *contex
         case BUY_ON_UNI:
         case BUY:
         case SIMPLE_BUY:
-            strncpy(msg->title, "Send max", msg->titleLength);
+            strncpy(msg->title, "Send Max", msg->titleLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);

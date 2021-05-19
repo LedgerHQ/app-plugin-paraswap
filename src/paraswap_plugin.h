@@ -78,6 +78,5 @@ typedef struct paraswap_parameters_t {
     // 2 * 2 + 7 * 1 == 4 + 7 == 13 bytes. There are 16 - 13 == 3 bytes left.
 } paraswap_parameters_t;
 
-void debug_write(char *buf);
 void handle_provide_parameter(void *parameters);
 void paraswap_plugin_call(int message, void *parameters);
