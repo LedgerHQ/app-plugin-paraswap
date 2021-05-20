@@ -154,8 +154,8 @@ static void handle_provide_token(void *parameters) {
         context->tokens_found |= TOKEN_SENT_FOUND;
     } else {
         // CAL did not find the token and token is not ETH.
-        context->decimals_sent = 18;
-        strncpy(context->ticker_sent, "", sizeof(context->ticker_sent));
+        context->decimals_sent = DEFAULT_DECIMAL;
+        strncpy(context->ticker_sent, DEFAULT_TICKER, sizeof(context->ticker_sent));
         // We will need an additional screen to display a warning message.
         msg->additionalScreens++;
     }
@@ -172,8 +172,8 @@ static void handle_provide_token(void *parameters) {
         context->tokens_found |= TOKEN_RECEIVED_FOUND;
     } else {
         // CAL did not find the token and token is not ETH.
-        context->decimals_received = 18;
-        strncpy(context->ticker_received, "", sizeof(context->ticker_sent));
+        context->decimals_received = DEFAULT_DECIMAL;
+        strncpy(context->ticker_received, DEFAULT_TICKER, sizeof(context->ticker_sent));
         // We will need an additional screen to display a warning message.
         msg->additionalScreens++;
     }

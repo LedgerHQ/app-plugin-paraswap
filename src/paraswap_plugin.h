@@ -66,6 +66,12 @@ typedef enum {
 #define FIRST_MEGAPATH        12
 #define NONE                  13  // Placeholder variant to be set when parsing is done but data is still being sent.
 
+// Number of decimals used when the token wasn't found in the CAL.
+#define DEFAULT_DECIMAL WEI_TO_ETHER
+
+// Ticker used when the token wasn't found in the CAL.
+#define DEFAULT_TICKER ""
+
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
 typedef struct paraswap_parameters_t {
     uint8_t amount_sent[INT256_LENGTH];
