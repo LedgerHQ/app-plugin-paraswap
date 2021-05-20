@@ -53,7 +53,6 @@ __attribute__((section(".boot"))) int main(int arg0) {
                 // regular call from ethereum
                 unsigned int *args = (unsigned int *) arg0;
 
-
                 if (args[0] != ETH_PLUGIN_CHECK_PRESENCE) {
                     paraswap_plugin_call(args[0], (void *) args[1]);
                 }
