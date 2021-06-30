@@ -44,6 +44,7 @@ const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH] = {0x00, 0x00, 0x00, 0x00, 0x00, 
 
 // Called once to init.
 static void handle_init_contract(void *parameters) {
+    PRINTF("INIT contract\n");
     ethPluginInitContract_t *msg = (ethPluginInitContract_t *) parameters;
 
     if (msg->interfaceVersion != ETH_PLUGIN_INTERFACE_VERSION_1) {
@@ -103,8 +104,7 @@ static void handle_init_contract(void *parameters) {
 static void handle_finalize(void *parameters) {
     ethPluginFinalize_t *msg = (ethPluginFinalize_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
-    PRINTF("eth2 plugin finalize\n");
-    DEBUG("handle_finalize");
+    PRINTF("plugin finalize\n");
     if (context->valid) {
         msg->numScreens = 2;
         if (context->selectorIndex == SIMPLE_SWAP || context->selectorIndex == SIMPLE_BUY)
@@ -211,7 +211,7 @@ static void handle_query_contract_id(void *parameters) {
 }
 
 void paraswap_plugin_call(int message, void *parameters) {
-    DEBUG("hi\n\n\n");
+    PRINTF("Plugin call: %d\n", message);
     switch (message) {
         case ETH_PLUGIN_INIT_CONTRACT:
             handle_init_contract(parameters);

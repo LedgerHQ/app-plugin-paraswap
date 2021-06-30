@@ -25,7 +25,8 @@ Need more information about the interface, the architecture, or general stuff ab
 ## Compilation
 
 ```
-make DEBUG=1  # compile optionally with PRINTF
+make DEBUG=10 # compile with PRINTF using semi-hosting (will work when using speculos but won't work on device)
+make DEBUG=1  # compile optionally with PRINTF (will not work on speculos but will work on device)
 make load     # load the app on the Nano using ledgerblue
 ```
 

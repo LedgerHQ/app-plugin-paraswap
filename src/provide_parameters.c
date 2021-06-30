@@ -289,10 +289,12 @@ static void handle_megaswap(ethPluginProvideParameter_t *msg, paraswap_parameter
 void handle_provide_parameter(void *parameters) {
     ethPluginProvideParameter_t *msg = (ethPluginProvideParameter_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
-    PRINTF("eth2 plugin provide parameter %d %.*H\n",
+
+    PRINTF("plugin provide parameter %d %.*H\n",
            msg->parameterOffset,
            PARAMETER_LENGTH,
            msg->parameter);
+    print_bytes(msg->parameter, PARAMETER_LENGTH);
 
     msg->result = ETH_PLUGIN_RESULT_OK;
 
