@@ -12,7 +12,7 @@ void debug_write(const char *buf) {
 }
 
 int semihosted_printf(const char *format, ...) {
-    char buf[128+1];
+    char buf[128 + 1];
 
     va_list args;
     va_start(args, format);
@@ -23,18 +23,34 @@ int semihosted_printf(const char *format, ...) {
 
     debug_write("semi-hosting: ");
     if (ret > 0) {
-      buf[ret] = 0;
-      debug_write(buf);
+        buf[ret] = 0;
+        debug_write(buf);
     }
 
     return ret;
 }
 
 static const char G_HEX[] = {
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
 };
 
-// %.*H doesn't work with semi-hosted printf, so here's a utility function to print bytes in hex format.
+// %.*H doesn't work with semi-hosted printf, so here's a utility function to print bytes in hex
+// format.
 void print_bytes(const uint8_t *bytes, uint16_t len) {
     unsigned char nibble1, nibble2;
     char str[] = {0, 0, 0};
