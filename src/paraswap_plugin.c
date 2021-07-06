@@ -104,7 +104,6 @@ static void handle_finalize(void *parameters) {
     ethPluginFinalize_t *msg = (ethPluginFinalize_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
     PRINTF("eth2 plugin finalize\n");
-    DEBUG("handle_finalize");
     if (context->valid) {
         msg->numScreens = 2;
         if (context->selectorIndex == SIMPLE_SWAP || context->selectorIndex == SIMPLE_BUY)
@@ -211,7 +210,6 @@ static void handle_query_contract_id(void *parameters) {
 }
 
 void paraswap_plugin_call(int message, void *parameters) {
-    DEBUG("hi\n\n\n");
     switch (message) {
         case ETH_PLUGIN_INIT_CONTRACT:
             handle_init_contract(parameters);
