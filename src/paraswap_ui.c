@@ -33,13 +33,13 @@ static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *contex
         case SIMPLE_SWAP:
         case MEGA_SWAP:
         case MULTI_SWAP:
-            strncpy(msg->title, "Send", msg->titleLength);
+            strlcpy(msg->title, "Send", msg->titleLength);
             break;
         case BUY_ON_UNI_FORK:
         case BUY_ON_UNI:
         case BUY:
         case SIMPLE_BUY:
-            strncpy(msg->title, "Send Max", msg->titleLength);
+            strlcpy(msg->title, "Send Max", msg->titleLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -64,13 +64,13 @@ static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *con
         case SIMPLE_SWAP:
         case MEGA_SWAP:
         case MULTI_SWAP:
-            strncpy(msg->title, "Receive Min", msg->titleLength);
+            strlcpy(msg->title, "Receive Min", msg->titleLength);
             break;
         case BUY_ON_UNI_FORK:
         case BUY_ON_UNI:
         case BUY:
         case SIMPLE_BUY:
-            strncpy(msg->title, "Receive", msg->titleLength);
+            strlcpy(msg->title, "Receive", msg->titleLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -89,7 +89,7 @@ static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *con
 
 // Set UI for "Beneficiary" screen.
 static void set_beneficiary_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
-    strncpy(msg->title, "Beneficiary", msg->titleLength);
+    strlcpy(msg->title, "Beneficiary", msg->titleLength);
 
     msg->msg[0] = '0';
     msg->msg[1] = 'x';
@@ -105,8 +105,8 @@ static void set_beneficiary_ui(ethQueryContractUI_t *msg, paraswap_parameters_t 
 // Set UI for "Warning" screen.
 static void set_warning_ui(ethQueryContractUI_t *msg,
                            paraswap_parameters_t *context __attribute__((unused))) {
-    strncpy(msg->title, "WARNING", msg->titleLength);
-    strncpy(msg->msg, "Unknown token", msg->msgLength);
+    strlcpy(msg->title, "WARNING", msg->titleLength);
+    strlcpy(msg->msg, "Unknown token", msg->msgLength);
 }
 
 // Helper function that returns the enum corresponding to the screen that should be displayed.

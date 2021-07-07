@@ -145,34 +145,34 @@ static void handle_provide_token(void *parameters) {
 
     if (ADDRESS_IS_ETH(context->contract_address_sent)) {
         context->decimals_sent = WEI_TO_ETHER;
-        strncpy(context->ticker_sent, "ETH", sizeof(context->ticker_sent));
+        strlcpy(context->ticker_sent, "ETH", sizeof(context->ticker_sent));
         context->tokens_found |= TOKEN_SENT_FOUND;
     } else if (msg->token1 != NULL) {
         context->decimals_sent = msg->token1->decimals;
-        strncpy(context->ticker_sent, (char *) msg->token1->ticker, sizeof(context->ticker_sent));
+        strlcpy(context->ticker_sent, (char *) msg->token1->ticker, sizeof(context->ticker_sent));
         context->tokens_found |= TOKEN_SENT_FOUND;
     } else {
         // CAL did not find the token and token is not ETH.
         context->decimals_sent = DEFAULT_DECIMAL;
-        strncpy(context->ticker_sent, DEFAULT_TICKER, sizeof(context->ticker_sent));
+        strlcpy(context->ticker_sent, DEFAULT_TICKER, sizeof(context->ticker_sent));
         // We will need an additional screen to display a warning message.
         msg->additionalScreens++;
     }
 
     if (ADDRESS_IS_ETH(context->contract_address_received)) {
         context->decimals_received = WEI_TO_ETHER;
-        strncpy(context->ticker_received, "ETH", sizeof(context->ticker_received));
+        strlcpy(context->ticker_received, "ETH", sizeof(context->ticker_received));
         context->tokens_found |= TOKEN_RECEIVED_FOUND;
     } else if (msg->token2 != NULL) {
         context->decimals_received = msg->token2->decimals;
-        strncpy(context->ticker_received,
+        strlcpy(context->ticker_received,
                 (char *) msg->token2->ticker,
                 sizeof(context->ticker_received));
         context->tokens_found |= TOKEN_RECEIVED_FOUND;
     } else {
         // CAL did not find the token and token is not ETH.
         context->decimals_received = DEFAULT_DECIMAL;
-        strncpy(context->ticker_received, DEFAULT_TICKER, sizeof(context->ticker_sent));
+        strlcpy(context->ticker_received, DEFAULT_TICKER, sizeof(context->ticker_sent));
         // We will need an additional screen to display a warning message.
         msg->additionalScreens++;
     }
@@ -184,7 +184,7 @@ static void handle_query_contract_id(void *parameters) {
     ethQueryContractID_t *msg = (ethQueryContractID_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
 
-    strncpy(msg->name, PLUGIN_NAME, msg->nameLength);
+    strlcpy(msg->name, PLUGIN_NAME, msg->nameLength);
 
     switch (context->selectorIndex) {
         case MEGA_SWAP:
@@ -192,13 +192,13 @@ static void handle_query_contract_id(void *parameters) {
         case SIMPLE_SWAP:
         case SWAP_ON_UNI_FORK:
         case SWAP_ON_UNI:
-            strncpy(msg->version, "Swap", msg->versionLength);
+            strlcpy(msg->version, "Swap", msg->versionLength);
             break;
         case SIMPLE_BUY:
         case BUY_ON_UNI_FORK:
         case BUY_ON_UNI:
         case BUY:
-            strncpy(msg->version, "Buy", msg->versionLength);
+            strlcpy(msg->version, "Buy", msg->versionLength);
             break;
         default:
             PRINTF("Selector Index :%d not supported\n", context->selectorIndex);
