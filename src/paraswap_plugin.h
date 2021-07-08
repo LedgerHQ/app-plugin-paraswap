@@ -1,6 +1,5 @@
 #pragma once
 
-#include <bsd/string.h>
 #include "eth_internals.h"
 #include "eth_plugin_interface.h"
 

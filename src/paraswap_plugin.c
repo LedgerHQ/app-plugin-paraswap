@@ -1,5 +1,4 @@
 #include "paraswap_plugin.h"
-#include <string.h>
 
 // Need more information about the interface for plugins? Please read the README.md!
 
