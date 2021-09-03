@@ -1,12 +1,9 @@
 #!/bin/bash
 
 # FILL THESE WITH YOUR OWN SDKs PATHS and APP-ETHEREUM's ROOT
-#NANOS_SDK=""
-#NANOX_SDK=""
-#APP_ETHEREUM=""
-
-# list of apps required by tests that we want to build here
-appnames=("ethereum" "ethereum_classic")
+# NANOS_SDK=
+# NANOX_SDK=
+# APP_ETHEREUM=
 
 # create elfs folder if it doesn't exist
 mkdir -p elfs
@@ -24,7 +21,7 @@ cp bin/app.elf "tests/elfs/paraswap_nanos.elf"
 echo "**Building app-ethereum for Nano S..."
 cd $APP_ETHEREUM
 make clean BOLOS_SDK=$NANOS_SDK
-make -j DEBUG=1 ALLOW_DATA=1 BOLOS_SDK=$NANOS_SDK CHAIN=ethereum
+make -j DEBUG=1 BOLOS_SDK=$NANOS_SDK CHAIN=ethereum
 cd -
 cp "${APP_ETHEREUM}/bin/app.elf" "tests/elfs/ethereum_nanos.elf"
 
@@ -39,7 +36,7 @@ cp bin/app.elf "tests/elfs/paraswap_nanox.elf"
 echo "**Building app-ethereum for Nano X..."
 cd $APP_ETHEREUM
 make clean BOLOS_SDK=$NANOX_SDK
-make -j DEBUG=1 ALLOW_DATA=1 BOLOS_SDK=$NANOX_SDK CHAIN=ethereum
+make -j DEBUG=1 BOLOS_SDK=$NANOX_SDK CHAIN=ethereum
 cd -
 cp "${APP_ETHEREUM}/bin/app.elf" "tests/elfs/ethereum_nanox.elf"
 
