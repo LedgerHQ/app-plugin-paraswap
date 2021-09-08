@@ -46,11 +46,17 @@ static void handle_init_contract(void *parameters) {
     ethPluginInitContract_t *msg = (ethPluginInitContract_t *) parameters;
 
     if (msg->interfaceVersion != ETH_PLUGIN_INTERFACE_VERSION_LATEST) {
+        PRINTF("Wrong interface version: expected %d got %d\n",
+               ETH_PLUGIN_INTERFACE_VERSION_LATEST,
+               msg->interfaceVersion);
         msg->result = ETH_PLUGIN_RESULT_UNAVAILABLE;
         return;
     }
 
     if (msg->pluginContextLength < sizeof(paraswap_parameters_t)) {
+        PRINTF("Paraswap context size too big: expected %d got %d\n",
+               sizeof(paraswap_parameters_t),
+               msg->pluginContextLength);
         msg->result = ETH_PLUGIN_RESULT_ERROR;
         return;
     }
@@ -102,7 +108,6 @@ static void handle_init_contract(void *parameters) {
 static void handle_finalize(void *parameters) {
     ethPluginFinalize_t *msg = (ethPluginFinalize_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
-    PRINTF("eth2 plugin finalize\n");
     if (context->valid) {
         msg->numScreens = 2;
         if (context->selectorIndex == SIMPLE_SWAP || context->selectorIndex == SIMPLE_BUY)
@@ -116,6 +121,15 @@ static void handle_finalize(void *parameters) {
             PRINTF("Setting address sent to: %.*H\n",
                    ADDRESS_LENGTH,
                    context->contract_address_sent);
+
+            // The user is not swapping ETH, so make sure there's no ETH being sent in this tx.
+            if (!allzeroes(msg->pluginSharedRO->txContent->value.value,
+                           msg->pluginSharedRO->txContent->value.length)) {
+                PRINTF("ETH attached to tx when token being swapped is %.*H\n",
+                       sizeof(context->contract_address_sent),
+                       context->contract_address_sent);
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+            }
         } else {
             msg->tokenLookup1 = NULL;
         }
