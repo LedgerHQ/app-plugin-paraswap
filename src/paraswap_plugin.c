@@ -46,11 +46,17 @@ static void handle_init_contract(void *parameters) {
     ethPluginInitContract_t *msg = (ethPluginInitContract_t *) parameters;
 
     if (msg->interfaceVersion != ETH_PLUGIN_INTERFACE_VERSION_LATEST) {
+        PRINTF("Wrong interface version: expected %d got %d\n",
+               ETH_PLUGIN_INTERFACE_VERSION_LATEST,
+               msg->interfaceVersion);
         msg->result = ETH_PLUGIN_RESULT_UNAVAILABLE;
         return;
     }
 
     if (msg->pluginContextLength < sizeof(paraswap_parameters_t)) {
+        PRINTF("Paraswap context size too big: expected %d got %d\n",
+               sizeof(paraswap_parameters_t),
+               msg->pluginContextLength);
         msg->result = ETH_PLUGIN_RESULT_ERROR;
         return;
     }
