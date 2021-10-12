@@ -115,8 +115,9 @@ static void handle_finalize(void *parameters) {
                 // An addiitonal screen is required to display the `beneficiary` field.
                 msg->numScreens += 1;
             }
-        if (!ADDRESS_IS_ETH(context->contract_address_sent)) {
-            // Address is not ETH so we will need to look up the token in the CAL.
+        if (!ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
+            // Address is not network token (0xeee...) so we will need to look up the token in the
+            // CAL.
             msg->tokenLookup1 = context->contract_address_sent;
             PRINTF("Setting address sent to: %.*H\n",
                    ADDRESS_LENGTH,
@@ -133,8 +134,9 @@ static void handle_finalize(void *parameters) {
         } else {
             msg->tokenLookup1 = NULL;
         }
-        if (!ADDRESS_IS_ETH(context->contract_address_received)) {
-            // Address is not ETH so we will need to look up the token in the CAL.
+        if (!ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
+            // Address is not network token (0xeee...) so we will need to look up the token in the
+            // CAL.
             PRINTF("Setting address receiving to: %.*H\n",
                    ADDRESS_LENGTH,
                    context->contract_address_received);
@@ -156,9 +158,8 @@ static void handle_provide_token(void *parameters) {
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
     PRINTF("PARASWAP plugin provide token: 0x%p, 0x%p\n", msg->token1, msg->token2);
 
-    if (ADDRESS_IS_ETH(context->contract_address_sent)) {
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
         context->decimals_sent = WEI_TO_ETHER;
-        strlcpy(context->ticker_sent, "ETH", sizeof(context->ticker_sent));
         context->tokens_found |= TOKEN_SENT_FOUND;
     } else if (msg->token1 != NULL) {
         context->decimals_sent = msg->token1->decimals;
@@ -172,9 +173,8 @@ static void handle_provide_token(void *parameters) {
         msg->additionalScreens++;
     }
 
-    if (ADDRESS_IS_ETH(context->contract_address_received)) {
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
         context->decimals_received = WEI_TO_ETHER;
-        strlcpy(context->ticker_received, "ETH", sizeof(context->ticker_received));
         context->tokens_found |= TOKEN_RECEIVED_FOUND;
     } else if (msg->token2 != NULL) {
         context->decimals_received = msg->token2->decimals;
