@@ -2,13 +2,14 @@
 
 #include "eth_internals.h"
 #include "eth_plugin_interface.h"
+#include <string.h>
 
 #define PARAMETER_LENGTH 32
 #define SELECTOR_SIZE    4
 
 #define RUN_APPLICATION 1
 
-#define NUM_PARASWAP_SELECTORS 9
+#define NUM_PARASWAP_SELECTORS 18
 #define SELECTOR_SIZE          4
 
 #define PLUGIN_NAME "Paraswap"
@@ -35,7 +36,18 @@ typedef enum {
     MULTI_SWAP,
     BUY,
     MEGA_SWAP,
+    SWAP_ON_ZERO_V4,
+    SWAP_ON_ZERO_V2,
+    SIMPLE_SWAP_V4,
+    SWAP_ON_UNI_V4,
+    SWAP_ON_UNI_FORK_V4,
+    MULTI_SWAP_V4,
+    MEGA_SWAP_V4,
+    BUY_ON_UNI_V4,
+    BUY_ON_UNI_FORK_V4
 } paraswapSelector_t;
+
+extern const uint8_t *const PARASWAP_SELECTORS[NUM_PARASWAP_SELECTORS];
 
 typedef enum {
     SEND_SCREEN,
@@ -96,6 +108,9 @@ typedef struct paraswap_parameters_t {
     // 4 * 1 + 2 * 2 + 7 * 1 == 8 + 7 == 15 bytes. There are 16 - 15 == 1 byte left.
 } paraswap_parameters_t;
 
+void handle_init_contract(void *parameters);
 void handle_provide_parameter(void *parameters);
 void handle_query_contract_ui(void *parameters);
-void paraswap_plugin_call(int message, void *parameters);
+void handle_finalize(void *parameters);
+void handle_provide_token(void *parameters);
+void handle_query_contract_id(void *parameters);
