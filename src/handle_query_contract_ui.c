@@ -6,8 +6,8 @@ static void prepend_ticker(char *dest, size_t destsize, const char *ticker) {
     if (dest == NULL || ticker == NULL) {
         THROW(0x6503);
     }
-    uint8_t ticker_len = strlen(ticker);
-    uint8_t dest_len = strlen(dest);
+    size_t ticker_len = strnlen(ticker, MAX_TICKER_LEN);
+    size_t dest_len = strnlen(dest, destsize - ticker_len);
 
     if (dest_len + ticker_len >= destsize) {
         THROW(0x6503);
