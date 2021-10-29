@@ -1,20 +1,13 @@
 #include "paraswap_plugin.h"
 
-int secure_len(char *src) {
-    char dest[256];
-    strncpy(dest, src, sizeof dest);  // Truncation may happen
-    dest[sizeof dest - 1] = 0;
-    return strlen(dest);  // Compliant: "dest" is guaranteed to be null-terminated
-}
-
 // Prepend `dest` with `ticker`.
 // Dest must be big enough to hold `ticker` + `dest` + `\0`.
 static void prepend_ticker(char *dest, size_t destsize, const char *ticker) {
     if (dest == NULL || ticker == NULL) {
         THROW(0x6503);
     }
-    uint8_t ticker_len = secure_len(ticker);
-    uint8_t dest_len = secure_len(dest);
+    uint8_t ticker_len = strlen(ticker);
+    uint8_t dest_len = strlen(dest);
 
     if (dest_len + ticker_len >= destsize) {
         THROW(0x6503);
