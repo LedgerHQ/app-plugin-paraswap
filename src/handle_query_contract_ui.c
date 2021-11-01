@@ -7,7 +7,7 @@ static void prepend_ticker(char *dest, size_t destsize, const char *ticker) {
         THROW(0x6503);
     }
     size_t ticker_len = strnlen(ticker, MAX_TICKER_LEN);
-    size_t dest_len = strnlen(dest, destsize - ticker_len);
+    size_t dest_len = strnlen(dest, destsize);
 
     if (dest_len + ticker_len >= destsize) {
         THROW(0x6503);
