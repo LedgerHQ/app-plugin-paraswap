@@ -13,8 +13,9 @@ void handle_finalize(void *parameters) {
             // An addiitonal screen is required to display the `beneficiary` field.
             msg->numScreens += 1;
         }
-        if (!ADDRESS_IS_ETH(context->contract_address_sent)) {
-            // Address is not ETH so we will need to look up the token in the CAL.
+        if (!ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
+            // Address is not network token (0xeee...) so we will need to look up the token in the
+            // CAL.
             msg->tokenLookup1 = context->contract_address_sent;
             PRINTF("Setting address sent to: %.*H\n",
                    ADDRESS_LENGTH,
@@ -31,8 +32,9 @@ void handle_finalize(void *parameters) {
         } else {
             msg->tokenLookup1 = NULL;
         }
-        if (!ADDRESS_IS_ETH(context->contract_address_received)) {
-            // Address is not ETH so we will need to look up the token in the CAL.
+        if (!ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
+            // Address is not network token (0xeee...) so we will need to look up the token in the
+            // CAL.
             PRINTF("Setting address receiving to: %.*H\n",
                    ADDRESS_LENGTH,
                    context->contract_address_received);

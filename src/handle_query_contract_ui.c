@@ -62,6 +62,10 @@ static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *contex
                    msg->msgLength,
                    context->decimals_sent);
 
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
+        strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
+    }
+
     prepend_ticker(msg->msg, msg->msgLength, context->ticker_sent);
 }
 
@@ -102,6 +106,10 @@ static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *con
                    msg->msgLength,
                    context->decimals_received);
 
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
+        strlcpy(context->ticker_received, msg->network_ticker, sizeof(context->ticker_received));
+    }
+
     prepend_ticker(msg->msg, msg->msgLength, context->ticker_received);
 }
 
@@ -112,12 +120,10 @@ static void set_beneficiary_ui(ethQueryContractUI_t *msg, paraswap_parameters_t 
     msg->msg[0] = '0';
     msg->msg[1] = 'x';
 
-    chain_config_t chainConfig = {0};
-
     getEthAddressStringFromBinary((uint8_t *) context->beneficiary,
                                   (uint8_t *) msg->msg + 2,
                                   msg->pluginSharedRW->sha3,
-                                  &chainConfig);
+                                  0);
 }
 
 // Set UI for "Warning" screen.
