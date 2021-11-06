@@ -1,7 +1,7 @@
 import Zemu from "@zondax/zemu";
 import Eth from "@ledgerhq/hw-app-eth";
 import { generate_plugin_config } from "./generate_plugin_config";
-import { parseEther, parseUnits, RLP } from "ethers/lib/utils";
+import { parseEther, parseUnits, RLP } from "ethers/utils";
 
 const transactionUploadDelay = 200000;
 
