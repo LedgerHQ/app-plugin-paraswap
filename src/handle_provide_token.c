@@ -5,9 +5,8 @@ void handle_provide_token(void *parameters) {
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
     PRINTF("PARASWAP plugin provide token: 0x%p, 0x%p\n", msg->token1, msg->token2);
 
-    if (ADDRESS_IS_ETH(context->contract_address_sent)) {
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
         context->decimals_sent = WEI_TO_ETHER;
-        strlcpy(context->ticker_sent, "ETH", sizeof(context->ticker_sent));
         context->tokens_found |= TOKEN_SENT_FOUND;
     } else if (msg->token1 != NULL) {
         context->decimals_sent = msg->token1->decimals;
@@ -21,9 +20,8 @@ void handle_provide_token(void *parameters) {
         msg->additionalScreens++;
     }
 
-    if (ADDRESS_IS_ETH(context->contract_address_received)) {
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
         context->decimals_received = WEI_TO_ETHER;
-        strlcpy(context->ticker_received, "ETH", sizeof(context->ticker_received));
         context->tokens_found |= TOKEN_RECEIVED_FOUND;
     } else if (msg->token2 != NULL) {
         context->decimals_received = msg->token2->decimals;
