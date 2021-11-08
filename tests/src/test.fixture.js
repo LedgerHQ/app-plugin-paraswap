@@ -3,7 +3,7 @@ import Eth from "@ledgerhq/hw-app-eth";
 import { generate_plugin_config } from "./generate_plugin_config";
 import { parseEther, parseUnits, RLP } from "ethers/utils";
 
-const transactionUploadDelay = 200000;
+const transactionUploadDelay = 60000;
 
 const sim_options_generic = {
   logging: true,
@@ -119,7 +119,7 @@ function zemu(device, func, signed = false) {
 
 /**
  * Process the trasaction through the full test process in interaction with the simulator
- * @param {string} eth Device to test (nanos, nanox)
+ * @param {Eth} eth Device to test (nanos, nanox)
  * @param {function} sim Zemu simulator
  * @param {int} steps Number of steps to push right button
  * @param {string} label directory against which the test snapshots must be checked.
@@ -156,8 +156,7 @@ function processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, s
         sim,
         device.steps,
         device.name + "_" + testDirSuffix,
-        rawTxHex,
-        signed
+        rawTxHex
       );
     },signed)
   );
