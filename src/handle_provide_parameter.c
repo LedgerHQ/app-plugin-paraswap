@@ -1,35 +1,23 @@
 #include "paraswap_plugin.h"
 
-// Store the amount sent in the form of a string, without any ticker or decimals. These will be
-// added when displaying.
-static void handle_amount_sent(const ethPluginProvideParameter_t *msg,
-                               paraswap_parameters_t *context) {
-    memset(context->amount_sent, 0, sizeof(context->amount_sent));
-
-    // Convert to string.
-    amountToString(msg->parameter,
-                   PARAMETER_LENGTH,
-                   0,
-                   "",
-                   (char *) context->amount_sent,
-                   sizeof(context->amount_sent));
-    PRINTF("AMOUNT SENT: %s\n", context->amount_sent);
+// Copies the whole parameter (32 bytes long) from `src` to `dst`.
+// Useful for numbers, data...
+static void copy_parameter(uint8_t *dst, size_t dst_len, uint8_t *src) {
+    // Take the minimum between dst_len and parameter_length to make sure we don't overwrite memory.
+    size_t len = MIN(dst_len, PARAMETER_LENGTH);
+    memcpy(dst, src, len);
 }
 
-// Store the amount received in the form of a string, without any ticker or decimals. These will be
-// added when displaying.
+// Copy amount sent parameter to amount_sent
+static void handle_amount_sent(const ethPluginProvideParameter_t *msg,
+                               paraswap_parameters_t *context) {
+    copy_parameter(context->amount_sent, sizeof(context->amount_sent), msg->parameter);
+}
+
+// Copy amount sent parameter to amount_received
 static void handle_amount_received(const ethPluginProvideParameter_t *msg,
                                    paraswap_parameters_t *context) {
-    memset(context->amount_received, 0, sizeof(context->amount_received));
-
-    // Convert to string.
-    amountToString(msg->parameter,
-                   PARAMETER_LENGTH,
-                   0,   // No decimals
-                   "",  // No ticker
-                   (char *) context->amount_received,
-                   sizeof(context->amount_received));
-    PRINTF("AMOUNT RECEIVED: %s\n", context->amount_received);
+    copy_parameter(context->amount_received, sizeof(context->amount_received), msg->parameter);
 }
 
 static void handle_beneficiary(const ethPluginProvideParameter_t *msg,
