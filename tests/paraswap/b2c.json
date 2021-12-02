@@ -93,7 +93,69 @@
                     ],
                     "method": "simpleSwap",
                     "plugin": "Paraswap"
-                }
+                },
+                "0x58b9d179": {
+                    "erc20OfInterest": [
+                        "path.0"
+                    ],
+                    "method": "swapOnUniswap",
+                    "plugin": "Paraswap"
+                },
+                "0x0863b7ac": {
+                    "plugin": "Paraswap",
+                    "erc20OfInterest": [
+                      "path.0",
+                      "path.-1"
+                    ],
+                    "method": "swapOnUniswapFork"
+                },
+                  "0x33635226": {
+                    "plugin": "Paraswap",
+                    "erc20OfInterest": [
+                      "path.0",
+                      "path.-1"
+                    ],
+                    "method": "buyOnUniswapFork"
+                  },
+                  "0x8f00eccb": {
+                    "plugin": "Paraswap",
+                    "erc20OfInterest": [
+                      "data.fromToken",
+                      "data.path.-1.to"
+                    ],
+                    "method":"multiSwap"
+                  },
+                  "0xa27e8b6b": {
+                    "plugin": "Paraswap",
+                    "erc20OfInterest": [
+                      "fromToken",
+                      "toToken"
+                    ]
+                  },
+                  "0xec1d21dd": {
+                    "plugin": "Paraswap",
+                    "erc20OfInterest": [
+                      "data.fromToken",
+                      "data.path.0.path.-1.to"
+                    ],
+                    "method":"megaSwap"
+                  },
+                  "0xf9355f72": {
+                    "plugin": "Paraswap",
+                    "erc20OfInterest": [
+                      "path.0",
+                      "path.-1"
+                    ],
+                    "method":"buyOnUniswap"
+                  },
+                  "0xf95a49eb": {
+                    "plugin": "Paraswap",
+                    "erc20OfInterest": [
+                      "data.fromToken",
+                      "data.toToken"
+                    ],
+                    "method":"buy"
+                  }
             }
         }
 
