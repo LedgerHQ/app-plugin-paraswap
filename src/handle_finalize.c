@@ -7,9 +7,7 @@ void handle_finalize(void *parameters) {
         msg->numScreens = 2;
         if ((context->selectorIndex == SIMPLE_SWAP || context->selectorIndex == SIMPLE_BUY ||
              context->selectorIndex == SIMPLE_SWAP_V4) &&
-            (strncmp(context->beneficiary,
-                     (const char *) NULL_ETH_ADDRESS,
-                     ADDRESS_LENGTH) != 0)) {
+            (strncmp(context->beneficiary, (const char *) NULL_ETH_ADDRESS, ADDRESS_LENGTH) != 0)) {
             // An addiitonal screen is required to display the `beneficiary` field.
             msg->numScreens += 1;
         }
