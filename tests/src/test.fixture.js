@@ -173,7 +173,7 @@ function processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, s
 }
 
 
-function populateTransaction(contractAddr, inputData, chainId){
+function populateTransaction(contractAddr, inputData, chainId, value="0.1"){
   // Get the generic transaction template
   let unsignedTx = genericTx;
   //adapt to the appropriate network
@@ -183,7 +183,7 @@ function populateTransaction(contractAddr, inputData, chainId){
   // Modify the attached data
   unsignedTx.data = inputData;
   // Modify the number of ETH sent
-  unsignedTx.value = parseEther("0.1");
+  unsignedTx.value = parseEther(value);
   // Create serializedTx and remove the "0x" prefix
   return ethers.utils.serializeTransaction(unsignedTx).slice(2);
 }
