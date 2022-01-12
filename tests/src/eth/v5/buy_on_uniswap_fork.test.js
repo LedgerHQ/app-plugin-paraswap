@@ -8,7 +8,7 @@ const testLabel = "Buy On Uniswap Fork"; // <= Name of the test
 const testDirSuffix = "buy_on_uniswap_fork"; // <= directory to compare device snapshots to
 const testNetwork = "eth"; 
 
-const signedPlugin = true;
+const signedPlugin = false;
 
 const devices = [
   {

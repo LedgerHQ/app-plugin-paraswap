@@ -8,7 +8,7 @@ const testLabel = "Buy"; // <= Name of the test
 const testDirSuffix = "buy_v4"; // <= directory to compare device snapshots to
 const testNetwork = "eth"; 
 
-const signedPlugin = true; // <== set to true if the plugin is already signed and available
+const signedPlugin = false; // <== set to true if the plugin is already signed and available
 const devices = [
   {
     name: "nanos",
