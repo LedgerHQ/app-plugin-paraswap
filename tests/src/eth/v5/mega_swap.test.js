@@ -7,7 +7,7 @@ const rawTxHex =
 const testLabel = "Mega Swap"; // <= Name of the test
 const testDirSuffix = "mega_swap"; // <= directory to compare device snapshots to
 const testNetwork = "eth"; 
-const signedPlugin = true;
+const signedPlugin = false;
 
 const devices = [
   {

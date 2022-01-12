@@ -8,7 +8,7 @@ const testLabel = "Simple Swap"; // <= Name of the test
 const testDirSuffix = "simple_swap_v4"; // <= directory to compare device snapshots to
 const testNetwork = "eth"; 
 
-const signedPlugin = true;
+const signedPlugin = false;
 const devices = [
   {
     name: "nanos",

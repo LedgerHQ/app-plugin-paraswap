@@ -7,7 +7,7 @@ const rawTxHex =
 const testLabel = "Simple Buy"; // <= Name of the test
 const testDirSuffix = "simple_buy"; // <= directory to compare device snapshots to
 const testNetwork = "eth"; 
-const signedPlugin = true;
+const signedPlugin = false;
 
 const devices = [
   {

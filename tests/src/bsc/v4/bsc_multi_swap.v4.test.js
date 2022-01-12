@@ -5,7 +5,7 @@ const contractName = "Paraswap V4";
 const testLabel = "Multi Swap"; // <= Name of the test
 const testDirSuffix = "multi_swap_v4"; // <= directory to compare device snapshots to
 const testNetwork = "bsc"; 
-const signedPlugin = true;
+const signedPlugin = false;
 
 const contractAddr = "0x55a0e3b6579972055faa983482aceb4b251dcf15";
 const chainID = 56; // BSC

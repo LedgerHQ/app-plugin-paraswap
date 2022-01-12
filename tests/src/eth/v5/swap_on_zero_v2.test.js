@@ -7,7 +7,7 @@ const rawTxHex =
 const testLabel = "Swap On Zero V2"; // <= Name of the test
 const testDirSuffix = "swap_on_zero_v2"; // <= directory to compare device snapshots to
 const testNetwork = "eth"; 
-const signedPlugin = true;
+const signedPlugin = false;
 
 const devices = [
   {
