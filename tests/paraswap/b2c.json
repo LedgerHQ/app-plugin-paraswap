@@ -52,7 +52,7 @@
                 "0x46c67b6d": {
                     "erc20OfInterest": [
                         "data.fromToken",
-                        "data.path.1.path.-1.to"
+                        "data.path.0.path.-1.to"
                     ],
                     "method": "megaSwap",
                     "plugin": "Paraswap"
