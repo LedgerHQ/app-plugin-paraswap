@@ -1,35 +1,15 @@
 #include "paraswap_plugin.h"
 
-// Store the amount sent in the form of a string, without any ticker or decimals. These will be
-// added when displaying.
+// Copy amount sent parameter to amount_sent
 static void handle_amount_sent(const ethPluginProvideParameter_t *msg,
                                paraswap_parameters_t *context) {
-    memset(context->amount_sent, 0, sizeof(context->amount_sent));
-
-    // Convert to string.
-    amountToString(msg->parameter,
-                   PARAMETER_LENGTH,
-                   0,
-                   "",
-                   (char *) context->amount_sent,
-                   sizeof(context->amount_sent));
-    PRINTF("AMOUNT SENT: %s\n", context->amount_sent);
+    copy_parameter(context->amount_sent, msg->parameter, sizeof(context->amount_sent));
 }
 
-// Store the amount received in the form of a string, without any ticker or decimals. These will be
-// added when displaying.
+// Copy amount sent parameter to amount_received
 static void handle_amount_received(const ethPluginProvideParameter_t *msg,
                                    paraswap_parameters_t *context) {
-    memset(context->amount_received, 0, sizeof(context->amount_received));
-
-    // Convert to string.
-    amountToString(msg->parameter,
-                   PARAMETER_LENGTH,
-                   0,   // No decimals
-                   "",  // No ticker
-                   (char *) context->amount_received,
-                   sizeof(context->amount_received));
-    PRINTF("AMOUNT RECEIVED: %s\n", context->amount_received);
+    copy_parameter(context->amount_received, msg->parameter, sizeof(context->amount_received));
 }
 
 static void handle_beneficiary(const ethPluginProvideParameter_t *msg,

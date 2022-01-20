@@ -1,30 +1,5 @@
 #include "paraswap_plugin.h"
 
-// Prepend `dest` with `ticker`.
-// Dest must be big enough to hold `ticker` + `dest` + `\0`.
-static void prepend_ticker(char *dest, size_t destsize, const char *ticker) {
-    if (dest == NULL || ticker == NULL) {
-        THROW(0x6503);
-    }
-    size_t ticker_len = strnlen(ticker, MAX_TICKER_LEN);
-    size_t dest_len = strnlen(dest, destsize);
-
-    if (dest_len + ticker_len >= destsize) {
-        THROW(0x6503);
-    }
-
-    // Right shift the string by `ticker_len` bytes.
-    while (dest_len != 0) {
-        dest[dest_len + ticker_len] = dest[dest_len];  // First iteration will copy the \0
-        dest_len--;
-    }
-    // Don't forget to null terminate the string.
-    dest[ticker_len] = dest[0];
-
-    // Copy the ticker to the beginning of the string.
-    memcpy(dest, ticker, ticker_len);
-}
-
 // Set UI for the "Send" screen.
 static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
     switch (context->selectorIndex) {
@@ -56,19 +31,17 @@ static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *contex
             return;
     }
 
-    adjustDecimals((char *) context->amount_sent,
-                   strnlen((char *) context->amount_sent, sizeof(context->amount_sent)),
-                   msg->msg,
-                   msg->msgLength,
-                   context->decimals_sent);
-
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
         strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
     }
 
-    prepend_ticker(msg->msg, msg->msgLength, context->ticker_sent);
+    amountToString(context->amount_sent,
+                   sizeof(context->amount_sent),
+                   context->decimals_sent,
+                   context->ticker_sent,
+                   msg->msg,
+                   msg->msgLength);
 }
-
 // Set UI for "Receive" screen.
 static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
     switch (context->selectorIndex) {
@@ -100,17 +73,16 @@ static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *con
             return;
     }
 
-    adjustDecimals((char *) context->amount_received,
-                   strnlen((char *) context->amount_received, sizeof(context->amount_received)),
-                   msg->msg,
-                   msg->msgLength,
-                   context->decimals_received);
-
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
         strlcpy(context->ticker_received, msg->network_ticker, sizeof(context->ticker_received));
     }
 
-    prepend_ticker(msg->msg, msg->msgLength, context->ticker_received);
+    amountToString(context->amount_received,
+                   sizeof(context->amount_received),
+                   context->decimals_received,
+                   context->ticker_received,
+                   msg->msg,
+                   msg->msgLength);
 }
 
 // Set UI for "Beneficiary" screen.
@@ -121,7 +93,7 @@ static void set_beneficiary_ui(ethQueryContractUI_t *msg, paraswap_parameters_t 
     msg->msg[1] = 'x';
 
     getEthAddressStringFromBinary((uint8_t *) context->beneficiary,
-                                  (uint8_t *) msg->msg + 2,
+                                  msg->msg + 2,
                                   msg->pluginSharedRW->sha3,
                                   0);
 }
@@ -196,6 +168,7 @@ static screens_t get_screen(const ethQueryContractUI_t *msg, const paraswap_para
             return ERROR;
             break;
     }
+    return ERROR;
 }
 
 void handle_query_contract_ui(void *parameters) {
