@@ -93,7 +93,7 @@ static void set_beneficiary_ui(ethQueryContractUI_t *msg, paraswap_parameters_t 
     msg->msg[1] = 'x';
 
     getEthAddressStringFromBinary((uint8_t *) context->beneficiary,
-                                  (uint8_t *) msg->msg + 2,
+                                  msg->msg + 2,
                                   msg->pluginSharedRW->sha3,
                                   0);
 }
@@ -168,6 +168,7 @@ static screens_t get_screen(const ethQueryContractUI_t *msg, const paraswap_para
             return ERROR;
             break;
     }
+    return ERROR;
 }
 
 void handle_query_contract_ui(void *parameters) {
