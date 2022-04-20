@@ -4,7 +4,7 @@ const contractName = "Paraswap V5";
 
 const testLabel = "Multi Swap"; // <= Name of the test
 const testDirSuffix = "multi_swap_matic"; // <= directory to compare device snapshots to
-const testNetwork = "polygon"; 
+const testNetwork = "polygon";
 const signedPlugin = false;
 
 const contractAddr = "0xdef171fe48cf0115b1d80b88dc8eab59176fee57";
@@ -20,13 +20,13 @@ const devices = [
   {
     name: "nanos",
     label: "Nano S",
-    steps: 8, // <= Define the number of steps for this test case and this device
+    steps: 8 // <= Define the number of steps for this test case and this device
   },
-  // {
-  //   name: "nanox",
-  //   label: "Nano X",
-  //   steps: 5, // <= Define the number of steps for this test case and this device
-  // },
+  {
+    name: "nanox",
+    label: "Nano X",
+    steps: 5 // <= Define the number of steps for this test case and this device
+  }
 ];
 
 devices.forEach((device) =>
