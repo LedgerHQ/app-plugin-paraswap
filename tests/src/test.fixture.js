@@ -19,8 +19,8 @@ const Resolve = require("path").resolve;
 const NANOS_ETH_PATH = Resolve("elfs/ethereum_nanos.elf");
 const NANOX_ETH_PATH = Resolve("elfs/ethereum_nanox.elf");
 
-const NANOS_PLUGIN_PATH = Resolve("elfs/paraswap_nanos.elf");
-const NANOX_PLUGIN_PATH = Resolve("elfs/paraswap_nanox.elf");
+const NANOS_PLUGIN_PATH = Resolve("elfs/plugin_nanos.elf");
+const NANOX_PLUGIN_PATH = Resolve("elfs/plugin_nanox.elf");
 
 const NANOS_PLUGIN = { Paraswap: NANOS_PLUGIN_PATH };
 const NANOX_PLUGIN = { Paraswap: NANOX_PLUGIN_PATH };
@@ -77,7 +77,7 @@ function txFromEtherscan(rawTx) {
  * Emulation of the device using zemu
  * @param {string} device name of the device to emulate (nanos, nanox)
  * @param {function} func
- * @param {boolean} signed the plugin is already signed 
+ * @param {boolean} signed the plugin is already signed
  * @returns {Promise}
  */
 function zemu(device, func, signed = false, testNetwork="ethereum") {
@@ -126,14 +126,14 @@ function zemu(device, func, signed = false, testNetwork="ethereum") {
  * @param {string} rawTxHex RawTransaction Hex to process
  */
 async function processTransaction(eth, sim, steps, label, rawTxHex,srlTx="") {
-  
+
   let serializedTx;
 
   if(srlTx == "")
     serializedTx = txFromEtherscan(rawTxHex);
-  else 
+  else
     serializedTx = srlTx;
-  
+
   let tx = eth.signTransaction("44'/60'/0'/0/0", serializedTx);
 
   await sim.waitUntilScreenIsNot(
