@@ -11,6 +11,7 @@ const sim_options_generic = {
   logging: true,
   X11: true,
   startDelay: 5000,
+  startText: 'is ready',
   custom: "",
 };
 
