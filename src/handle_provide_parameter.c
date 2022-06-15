@@ -1,23 +1,15 @@
 #include "paraswap_plugin.h"
 
-// Copies the whole parameter (32 bytes long) from `src` to `dst`.
-// Useful for numbers, data...
-static void copy_parameter(uint8_t *dst, size_t dst_len, uint8_t *src) {
-    // Take the minimum between dst_len and parameter_length to make sure we don't overwrite memory.
-    size_t len = MIN(dst_len, PARAMETER_LENGTH);
-    memcpy(dst, src, len);
-}
-
 // Copy amount sent parameter to amount_sent
 static void handle_amount_sent(const ethPluginProvideParameter_t *msg,
                                paraswap_parameters_t *context) {
-    copy_parameter(context->amount_sent, sizeof(context->amount_sent), msg->parameter);
+    copy_parameter(context->amount_sent, msg->parameter, sizeof(context->amount_sent));
 }
 
 // Copy amount sent parameter to amount_received
 static void handle_amount_received(const ethPluginProvideParameter_t *msg,
                                    paraswap_parameters_t *context) {
-    copy_parameter(context->amount_received, sizeof(context->amount_received), msg->parameter);
+    copy_parameter(context->amount_received, msg->parameter, sizeof(context->amount_received));
 }
 
 static void handle_beneficiary(const ethPluginProvideParameter_t *msg,
@@ -315,6 +307,30 @@ static void handle_megaswap(ethPluginProvideParameter_t *msg, paraswap_parameter
     }
 }
 
+static void handle_swap_uni_v2(ethPluginProvideParameter_t *msg, paraswap_parameters_t *context) {
+    switch (context->next_param) {
+        case TOKEN_SENT:  // tokenIn
+            context->checkpoint = msg->parameterOffset;
+            handle_token_sent(msg, context);
+            context->next_param = AMOUNT_SENT;
+            break;
+        case AMOUNT_SENT:  // amountIn
+            handle_amount_sent(msg, context);
+            context->next_param = AMOUNT_RECEIVED;
+            break;
+        case AMOUNT_RECEIVED:  // amountOutMin
+            handle_amount_received(msg, context);
+            context->next_param = NONE;
+            break;
+        case NONE:
+            break;
+        default:
+            PRINTF("Param not supported\n");
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            break;
+    }
+}
+
 void handle_provide_parameter(void *parameters) {
     ethPluginProvideParameter_t *msg = (ethPluginProvideParameter_t *) parameters;
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
@@ -368,6 +384,10 @@ void handle_provide_parameter(void *parameters) {
             case SWAP_ON_ZERO_V2:
             case SWAP_ON_ZERO_V4:
                 handle_swap_on_zero(msg, context);
+                break;
+
+            case SWAP_ON_UNI_V2_FORK:
+                handle_swap_uni_v2(msg, context);
                 break;
 
             default:

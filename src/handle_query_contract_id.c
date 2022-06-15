@@ -12,6 +12,7 @@ void handle_query_contract_id(void *parameters) {
         case SIMPLE_SWAP:
         case SIMPLE_SWAP_V4:
         case SWAP_ON_UNI_FORK:
+        case SWAP_ON_UNI_V2_FORK:
         case SWAP_ON_UNI:
         case SWAP_ON_ZERO_V4:
         case SWAP_ON_ZERO_V2:

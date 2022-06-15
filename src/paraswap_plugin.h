@@ -9,7 +9,7 @@
 
 #define RUN_APPLICATION 1
 
-#define NUM_PARASWAP_SELECTORS 18
+#define NUM_PARASWAP_SELECTORS 19
 #define SELECTOR_SIZE          4
 
 #define PLUGIN_NAME "Paraswap"
@@ -31,6 +31,7 @@ typedef enum {
     SWAP_ON_UNI,
     BUY_ON_UNI,
     SWAP_ON_UNI_FORK,
+    SWAP_ON_UNI_V2_FORK,
     BUY_ON_UNI_FORK,
     SIMPLE_SWAP,
     SIMPLE_BUY,

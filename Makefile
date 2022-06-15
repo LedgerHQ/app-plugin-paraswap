@@ -24,18 +24,18 @@ include $(BOLOS_SDK)/Makefile.defines
 APP_LOAD_PARAMS += --appFlags 0x800 --path "44'/60'" --path "45'" --curve secp256k1
 APP_LOAD_PARAMS += $(COMMON_LOAD_PARAMS)
 
-APPVERSION_M     = 1
-APPVERSION_N     = 1
-APPVERSION_P     = 2
+APPVERSION_M     = 2
+APPVERSION_N     = 0
+APPVERSION_P     = 3
 APPVERSION       = $(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)
 
 APPNAME = "Paraswap"
 
 #prepare hsm generation
-ifeq ($(TARGET_NAME), TARGET_NANOX)
-ICONNAME=icons/nanox_app_paraswap.gif
-else
+ifeq ($(TARGET_NAME), TARGET_NANOS)
 ICONNAME=icons/nanos_app_paraswap.gif
+else
+ICONNAME=icons/nanox_app_paraswap.gif
 endif
 
 ################
@@ -56,10 +56,14 @@ DEFINES   += UNUSED\(x\)=\(void\)x
 DEFINES   += APPVERSION=\"$(APPVERSION)\"
 
 ifeq ($(TARGET_NAME),TARGET_NANOX)
-DEFINES   += IO_SEPROXYHAL_BUFFER_SIZE_B=300
 DEFINES   += HAVE_BLE BLE_COMMAND_TIMEOUT_MS=2000
 DEFINES   += HAVE_BLE_APDU # basic ledger apdu transport over BLE
+endif
 
+ifeq ($(TARGET_NAME),TARGET_NANOS)
+DEFINES   += IO_SEPROXYHAL_BUFFER_SIZE_B=128
+else
+DEFINES   += IO_SEPROXYHAL_BUFFER_SIZE_B=300
 DEFINES   += HAVE_GLO096
 DEFINES   += HAVE_BAGL BAGL_WIDTH=128 BAGL_HEIGHT=64
 DEFINES   += HAVE_BAGL_ELLIPSIS # long label truncation feature
@@ -67,8 +71,6 @@ DEFINES   += HAVE_BAGL_FONT_OPEN_SANS_REGULAR_11PX
 DEFINES   += HAVE_BAGL_FONT_OPEN_SANS_EXTRABOLD_11PX
 DEFINES   += HAVE_BAGL_FONT_OPEN_SANS_LIGHT_16PX
 DEFINES   += HAVE_UX_FLOW
-else
-DEFINES   += IO_SEPROXYHAL_BUFFER_SIZE_B=128
 endif
 
 # Enabling debug PRINTF
@@ -83,10 +85,10 @@ ifneq ($(DEBUG),0)
                 CFLAGS    += -include src/dbg/debug.h
                 DEFINES   += HAVE_PRINTF PRINTF=semihosted_printf
         else
-                ifeq ($(TARGET_NAME),TARGET_NANOX)
-                        DEFINES   += HAVE_PRINTF PRINTF=mcu_usb_printf
-                else
+                ifeq ($(TARGET_NAME),TARGET_NANOS)
                         DEFINES   += HAVE_PRINTF PRINTF=screen_printf
+                else
+                        DEFINES   += HAVE_PRINTF PRINTF=mcu_usb_printf
                 endif
 
         endif
@@ -156,4 +158,4 @@ include $(BOLOS_SDK)/Makefile.rules
 dep/%.d: %.c Makefile
 
 listvariants:
-	@echo VARIANTS NONE paraswap 
+	@echo VARIANTS NONE paraswap
