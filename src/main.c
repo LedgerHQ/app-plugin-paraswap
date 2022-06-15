@@ -54,9 +54,9 @@ static const uint8_t PARASWAP_BUY_ON_UNISWAP_FORK_SELECTOR[SELECTOR_SIZE] = {0xc
 // uint256 amountOutMin, address weth, uint256[] pools)
 // Selector : 0x0b86a4c1
 static const uint8_t PARASWAP_SWAP_ON_UNISWAP_V2_FORK_SELECTOR[SELECTOR_SIZE] = {0x0b,
-                                                                              0x86,
-                                                                              0xa4,
-                                                                              0xc1};
+                                                                                 0x86,
+                                                                                 0xa4,
+                                                                                 0xc1};
 
 // Function : simpleSwap((address fromToken,address toToken,uint256 fromAmount,uint256 toAmount,
 // uint256 expectedAmount,address[] callees,bytes exchangeData,uint256[] startIndexes,

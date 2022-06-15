@@ -314,11 +314,11 @@ static void handle_swap_uni_v2(ethPluginProvideParameter_t *msg, paraswap_parame
             handle_token_sent(msg, context);
             context->next_param = AMOUNT_SENT;
             break;
-        case AMOUNT_SENT: // amountIn
+        case AMOUNT_SENT:  // amountIn
             handle_amount_sent(msg, context);
             context->next_param = AMOUNT_RECEIVED;
             break;
-        case AMOUNT_RECEIVED: // amountOutMin
+        case AMOUNT_RECEIVED:  // amountOutMin
             handle_amount_received(msg, context);
             context->next_param = NONE;
             break;
