@@ -52,6 +52,7 @@ void handle_init_contract(void *parameters) {
             break;
         case SWAP_ON_ZERO_V4:
         case SWAP_ON_ZERO_V2:
+        case SWAP_ON_UNI_V2_FORK:
             context->next_param = TOKEN_SENT;
             break;
         case MEGA_SWAP:
