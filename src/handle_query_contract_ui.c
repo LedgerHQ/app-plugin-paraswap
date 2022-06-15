@@ -4,6 +4,7 @@
 static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
     switch (context->selectorIndex) {
         case SWAP_ON_UNI_FORK:
+        case SWAP_ON_UNI_V2_FORK:
         case SWAP_ON_UNI:
         case SIMPLE_SWAP:
         case SIMPLE_SWAP_V4:
@@ -46,6 +47,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *contex
 static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
     switch (context->selectorIndex) {
         case SWAP_ON_UNI_FORK:
+        case SWAP_ON_UNI_V2_FORK:
         case SWAP_ON_UNI:
         case SIMPLE_SWAP:
         case SIMPLE_SWAP_V4:
