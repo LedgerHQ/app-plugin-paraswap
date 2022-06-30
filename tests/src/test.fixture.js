@@ -106,7 +106,7 @@ function zemu(device, func, signed = false, testNetwork="ethereum") {
       const eth = new Eth(transport);
 
       if(!signed){
-        eth.setPluginsLoadConfig({
+        eth.setLoadConfig({
           baseURL: null,
           extraPlugins: generate_plugin_config(testNetwork),
         });
