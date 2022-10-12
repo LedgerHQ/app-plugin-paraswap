@@ -210,7 +210,7 @@ void handle_query_ui_exception(unsigned int *args) {
         default:
             break;
     }
-
+}
 
 void call_app_ethereum() {
     unsigned int libcall_params[3];
