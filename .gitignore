@@ -6,6 +6,7 @@ debug/
 dep/
 obj/
 tests/elfs/plugin_nano*.elf
+build/
 
 # Editors
 .idea/
