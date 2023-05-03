@@ -67,7 +67,9 @@ static void handle_uniswap_and_forks(ethPluginProvideParameter_t *msg,
             context->next_param = PATHS_OFFSET;
             break;
         case PATHS_OFFSET:
-            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - sizeof(context->offset));
+            if (!U2BE_from_parameter(msg->parameter, &context->offset)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+            }
             context->next_param = PATH;
             break;
         case PATH:  // len(path)
@@ -152,7 +154,9 @@ static void handle_multiswap(ethPluginProvideParameter_t *msg, paraswap_paramete
             }
             break;
         case PATHS_OFFSET:
-            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
+            if (!U2BE_from_parameter(msg->parameter, &context->offset)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+            }
             context->next_param = PATHS_LEN;
             break;
         case PATHS_LEN:
@@ -163,7 +167,9 @@ static void handle_multiswap(ethPluginProvideParameter_t *msg, paraswap_paramete
                                   PARAMETER_LENGTH;  // Offset checkpoint starts after the length
             break;
         case OFFSET:
-            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
+            if (!U2BE_from_parameter(msg->parameter, &context->offset)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+            }
             context->next_param = TOKEN_RECEIVED;
             break;
         case TOKEN_RECEIVED:
@@ -265,7 +271,9 @@ static void handle_megaswap(ethPluginProvideParameter_t *msg, paraswap_parameter
             }
             break;
         case MEGA_PATHS_OFFSET:
-            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
+            if (!U2BE_from_parameter(msg->parameter, &context->offset)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+            }
             context->next_param = MEGA_PATHS_LEN;
             break;
         case MEGA_PATHS_LEN:
@@ -273,7 +281,9 @@ static void handle_megaswap(ethPluginProvideParameter_t *msg, paraswap_parameter
             break;
         case FIRST_MEGAPATH_OFFSET:
             context->checkpoint = msg->parameterOffset;
-            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
+            if (!U2BE_from_parameter(msg->parameter, &context->offset)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+            }
             context->next_param = FIRST_MEGAPATH;
             break;
         case FIRST_MEGAPATH:
@@ -281,17 +291,23 @@ static void handle_megaswap(ethPluginProvideParameter_t *msg, paraswap_parameter
             context->next_param = PATHS_OFFSET;
             break;
         case PATHS_OFFSET:
-            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
+            if (!U2BE_from_parameter(msg->parameter, &context->offset)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+            }
             context->next_param = PATHS_LEN;
             break;
         case PATHS_LEN:
-            context->skip = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
+            if (!U2BE_from_parameter(msg->parameter, &context->skip)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+            }
             context->skip--;  // Decrease by one because we wish to acces path[-1].
             context->next_param = PATH;
             break;
         case PATH:
             context->checkpoint = msg->parameterOffset;
-            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
+            if (!U2BE_from_parameter(msg->parameter, &context->offset)) {
+                msg->result = ETH_PLUGIN_RESULT_ERROR;
+            }
             context->next_param = TOKEN_RECEIVED;
             break;
         case TOKEN_RECEIVED:
