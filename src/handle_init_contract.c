@@ -1,9 +1,7 @@
 #include "paraswap_plugin.h"
 
 // Called once to init.
-void handle_init_contract(void *parameters) {
-    ethPluginInitContract_t *msg = (ethPluginInitContract_t *) parameters;
-
+void handle_init_contract(ethPluginInitContract_t *msg) {
     if (msg->interfaceVersion != ETH_PLUGIN_INTERFACE_VERSION_LATEST) {
         PRINTF("Wrong interface version: expected %d got %d\n",
                ETH_PLUGIN_INTERFACE_VERSION_LATEST,
