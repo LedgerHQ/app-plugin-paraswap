@@ -1,4 +1,4 @@
-#include "paraswap_plugin.h"
+#include "plugin.h"
 
 // Copy amount sent parameter to amount_sent
 static void handle_amount_sent(const ethPluginProvideParameter_t *msg,

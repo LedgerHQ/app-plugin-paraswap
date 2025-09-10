@@ -16,7 +16,7 @@
  ********************************************************************************/
 
 #include <stdint.h>
-#include "paraswap_plugin.h"
+#include "plugin.h"
 
 // ---------- Paraswap V5 -------------
 

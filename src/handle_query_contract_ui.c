@@ -1,5 +1,5 @@
 #include <stdbool.h>
-#include "paraswap_plugin.h"
+#include "plugin.h"
 
 // Set UI for the "Send" screen.
 static bool set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
