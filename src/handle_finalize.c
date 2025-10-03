@@ -1,4 +1,4 @@
-#include "paraswap_plugin.h"
+#include "plugin.h"
 
 void handle_finalize(ethPluginFinalize_t *msg) {
     paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
@@ -20,8 +20,7 @@ void handle_finalize(ethPluginFinalize_t *msg) {
                    context->contract_address_sent);
 
             // The user is not swapping ETH, so make sure there's no ETH being sent in this tx.
-            if (!allzeroes(msg->pluginSharedRO->txContent->value.value,
-                           msg->pluginSharedRO->txContent->value.length)) {
+            if (!allzeroes(msg->txContent->value.value, msg->txContent->value.length)) {
                 PRINTF("ETH attached to tx when token being swapped is %.*H\n",
                        sizeof(context->contract_address_sent),
                        context->contract_address_sent);
