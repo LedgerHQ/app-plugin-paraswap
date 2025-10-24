@@ -109,3 +109,7 @@ typedef struct paraswap_parameters_t {
     uint8_t array_len;
     // 8*1 + 2*3 == 8 + 6 == 14 bytes. There are 14 - 14 == 0 byte left.
 } paraswap_parameters_t;
+
+// Check that the plugin context structure will fit in the ethereum allocated memory.
+// Do not remove this check.
+ASSERT_SIZEOF_PLUGIN_CONTEXT(paraswap_parameters_t);
