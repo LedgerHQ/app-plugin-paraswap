@@ -144,6 +144,28 @@ static const uint8_t PARASWAP_BUY_ON_UNISWAP_FORK_V4_SELECTOR[SELECTOR_SIZE] = {
 
 // ---------- End Paraswap V4 -------------
 
+// ---------- Augustus V6.2 (Pro Partner) -------------
+
+// Function: swapExactAmountInPro(address executor, (address srcToken, address destToken,
+// uint256 fromAmount, uint256 toAmount, uint256 quotedAmount, bytes32 metadata,
+// address beneficiary) swapData, uint256 partnerAndFee, bytes permit, bytes executorData)
+// Selector: 0x0d893d62
+static const uint8_t PARASWAP_SWAP_EXACT_AMOUNT_IN_PRO_SELECTOR[SELECTOR_SIZE] = {0x0d,
+                                                                                  0x89,
+                                                                                  0x3d,
+                                                                                  0x62};
+
+// Function: swapExactAmountOutPro(address executor, (address srcToken, address destToken,
+// uint256 fromAmount, uint256 toAmount, uint256 quotedAmount, bytes32 metadata,
+// address beneficiary) swapData, uint256 partnerAndFee, bytes permit, bytes executorData)
+// Selector: 0x44224add
+static const uint8_t PARASWAP_SWAP_EXACT_AMOUNT_OUT_PRO_SELECTOR[SELECTOR_SIZE] = {0x44,
+                                                                                   0x22,
+                                                                                   0x4a,
+                                                                                   0xdd};
+
+// ---------- End Augustus V6.2 (Pro Partner) -------------
+
 // Array of all the different paraswap selectors.
 const uint8_t *const PARASWAP_SELECTORS[NUM_PARASWAP_SELECTORS] = {
     PARASWAP_DIRECT_UNI_V3_SWAP_SELECTOR,
@@ -165,7 +187,9 @@ const uint8_t *const PARASWAP_SELECTORS[NUM_PARASWAP_SELECTORS] = {
     PARASWAP_MULTI_SWAP_V4_SELECTOR,
     PARASWAP_MEGA_SWAP_V4_SELECTOR,
     PARASWAP_BUY_ON_UNISWAP_V4_SELECTOR,
-    PARASWAP_BUY_ON_UNISWAP_FORK_V4_SELECTOR};
+    PARASWAP_BUY_ON_UNISWAP_FORK_V4_SELECTOR,
+    PARASWAP_SWAP_EXACT_AMOUNT_IN_PRO_SELECTOR,
+    PARASWAP_SWAP_EXACT_AMOUNT_OUT_PRO_SELECTOR};
 
 // Paraswap uses `0xeeeee` as a dummy address to represent ETH.
 const uint8_t PARASWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,

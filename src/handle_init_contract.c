@@ -66,6 +66,11 @@ void handle_init_contract(ethPluginInitContract_t *msg) {
             if (context->selectorIndex != SIMPLE_SWAP_V4)
                 context->skip = 1;  // Skipping 0x20 (offset of structure)
             break;
+        case SWAP_EXACT_AMOUNT_IN_PRO:
+        case SWAP_EXACT_AMOUNT_OUT_PRO:
+            context->next_param = TOKEN_SENT;
+            context->skip = 1;  // Skip executor address
+            break;
         default:
             PRINTF("Missing selectorIndex\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;

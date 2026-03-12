@@ -177,6 +177,28 @@
                     "method":"buy"
                   }
             }
+        },
+        {
+            "address": "0x6a000f20005980200259b80c5102003040001068",
+            "contractName": "AugustusV6.2",
+            "selectors": {
+                "0x0d893d62": {
+                    "erc20OfInterest": [
+                        "swapData.srcToken",
+                        "swapData.destToken"
+                    ],
+                    "method": "swapExactAmountInPro",
+                    "plugin": "Velora"
+                },
+                "0x44224add": {
+                    "erc20OfInterest": [
+                        "swapData.srcToken",
+                        "swapData.destToken"
+                    ],
+                    "method": "swapExactAmountOutPro",
+                    "plugin": "Velora"
+                }
+            }
         }
 
     ],

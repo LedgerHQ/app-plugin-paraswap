@@ -330,6 +330,39 @@ static void handle_megaswap(ethPluginProvideParameter_t *msg, paraswap_parameter
     }
 }
 
+static void handle_swap_exact_amount_pro(ethPluginProvideParameter_t *msg,
+                                         paraswap_parameters_t *context) {
+    switch (context->next_param) {
+        case TOKEN_SENT:  // srcToken
+            handle_token_sent(msg, context);
+            context->next_param = TOKEN_RECEIVED;
+            break;
+        case TOKEN_RECEIVED:  // destToken
+            handle_token_received(msg, context);
+            context->next_param = AMOUNT_SENT;
+            break;
+        case AMOUNT_SENT:  // fromAmount
+            handle_amount_sent(msg, context);
+            context->next_param = AMOUNT_RECEIVED;
+            break;
+        case AMOUNT_RECEIVED:  // toAmount
+            handle_amount_received(msg, context);
+            context->next_param = BENEFICIARY;
+            context->skip = 2;  // Skip quotedAmount and metadata
+            break;
+        case BENEFICIARY:  // beneficiary
+            handle_beneficiary(msg, context);
+            context->next_param = NONE;
+            break;
+        case NONE:
+            break;
+        default:
+            PRINTF("Param not supported\n");
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            break;
+    }
+}
+
 static void handle_swap_uni_v2(ethPluginProvideParameter_t *msg, paraswap_parameters_t *context) {
     switch (context->next_param) {
         case TOKEN_SENT:  // tokenIn
@@ -411,6 +444,11 @@ void handle_provide_parameter(ethPluginProvideParameter_t *msg) {
 
             case SWAP_ON_UNI_V2_FORK:
                 handle_swap_uni_v2(msg, context);
+                break;
+
+            case SWAP_EXACT_AMOUNT_IN_PRO:
+            case SWAP_EXACT_AMOUNT_OUT_PRO:
+                handle_swap_exact_amount_pro(msg, context);
                 break;
 
             default:

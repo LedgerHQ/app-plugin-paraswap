@@ -6,9 +6,11 @@ void handle_finalize(ethPluginFinalize_t *msg) {
         msg->numScreens = 2;
         if ((context->selectorIndex == SIMPLE_SWAP || context->selectorIndex == SIMPLE_BUY ||
              context->selectorIndex == SIMPLE_SWAP_V4 ||
-             context->selectorIndex == DIRECT_UNI_V3_SWAP) &&
+             context->selectorIndex == DIRECT_UNI_V3_SWAP ||
+             context->selectorIndex == SWAP_EXACT_AMOUNT_IN_PRO ||
+             context->selectorIndex == SWAP_EXACT_AMOUNT_OUT_PRO) &&
             (strncmp(context->beneficiary, (const char *) NULL_ETH_ADDRESS, ADDRESS_LENGTH) != 0)) {
-            // An addiitonal screen is required to display the `beneficiary` field.
+            // An additional screen is required to display the `beneficiary` field.
             msg->numScreens += 1;
         }
         if (!ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {

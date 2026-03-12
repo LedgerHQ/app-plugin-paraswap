@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2026-03-12
+
+### Added
+
+- Support for Augustus v6.2 Pro Partner methods: `swapExactAmountInPro` (0x0d893d62) and `swapExactAmountOutPro` (0x44224add)
+- New contract support: `0x6a000f20005980200259b80c5102003040001068` (AugustusSwapper v6.2)
+- Tests for both new methods
+
 ## [1.1.2](https://github.com/ledgerhq/app-ethereum/compare/1.1.1...1.1.2) - 2021-10-12
 
 ### Fixed

@@ -8,7 +8,7 @@
 
 #define RUN_APPLICATION 1
 
-#define NUM_PARASWAP_SELECTORS 20
+#define NUM_PARASWAP_SELECTORS 22
 #define SELECTOR_SIZE          4
 
 #define PLUGIN_NAME "Velora"
@@ -46,7 +46,9 @@ typedef enum {
     MULTI_SWAP_V4,
     MEGA_SWAP_V4,
     BUY_ON_UNI_V4,
-    BUY_ON_UNI_FORK_V4
+    BUY_ON_UNI_FORK_V4,
+    SWAP_EXACT_AMOUNT_IN_PRO,
+    SWAP_EXACT_AMOUNT_OUT_PRO
 } paraswapSelector_t;
 
 extern const uint8_t *const PARASWAP_SELECTORS[NUM_PARASWAP_SELECTORS];
